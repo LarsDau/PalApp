@@ -2,6 +2,7 @@ package com.example.palapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -34,16 +35,25 @@ public class LoginActivity extends AppCompatActivity {
         registerBtn = findViewById(R.id.buttonRegister);
         userET = findViewById(R.id.editUser);
         passwordET = findViewById(R.id.editPassword);
-
         urlString = "http://palaver.se.paluno.uni-due.de";
+
+
+registerBtn.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+registerClicked();
+    }
+});
+
+
+    }
+    public void registerClicked(){
+        Intent intent = new Intent(this , RegisterActivity.class);
+        startActivity(intent);
+
+    }
         
-    }
 
-    public void loginClicked(View view){
-        System.out.println("Login clicked");
-    }
 
-    public void registerClicked(View view){
-        System.out.println("Register clicked");
-    }
+
 }
