@@ -36,6 +36,7 @@ public class LoginActivity extends AppCompatActivity {
         passwordET = findViewById(R.id.editPassword);
 
         urlString = "http://palaver.se.paluno.uni-due.de";
+        
     }
 
     public void loginClicked(View view){
