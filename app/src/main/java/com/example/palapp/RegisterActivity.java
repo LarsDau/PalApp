@@ -4,41 +4,58 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
-    Button register;
-    EditText name;
-    EditText vorname;
-    EditText username ;
-    EditText password;
 
-
+    String base = "http://palaver.se.paluno.uni-due.de";
+    String register = "http://palaver.se.paluno.uni-due.de/api/user/register";
+    String validate = "http://palaver.se.paluno.uni-due.de/api/user/register/api/user/validate";
+    String change = "http://palaver.se.paluno.uni-due.de/api/user/password";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-
-
-        register = findViewById(R.id.registerId);
-        name = findViewById(R.id.Name_id);
-        vorname = findViewById(R.id.Vorname_id);
-        username = findViewById(R.id.Username_id);
-        password = findViewById(R.id.password_id);
-
-
-
     }
 
+    public void registerClicked(View view){
+        RequestQueue queue = Volley.newRequestQueue(this);
 
-
-    public void register ( View view){
-
-
-
-
+        StringRequest postRequest = new StringRequest(Request.Method.POST, register,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        System.out.println("Response: " + response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        System.out.println("Response Error: " + error.toString());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  params = new HashMap<String, String>();
+                params.put("Username", "bgrfwb");
+                params.put("Password", "bgrb");
+                return params;
+            }
+        };
+        queue.add(postRequest);
     }
-
 }
