@@ -13,7 +13,9 @@
         android:supportsRtl="true"
         android:targetSandboxVersion="1"
         android:theme="@style/AppTheme">
-        <activity android:name=".RegisterActivity"></activity>
+        <activity android:name=".TestLoginActivity"></activity>
+        <activity android:name=".ContactActivity" />
+        <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

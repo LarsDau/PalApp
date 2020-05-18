@@ -47,14 +47,14 @@ public class RegisterActivity extends AppCompatActivity {
             HashMap<String, String> params = new HashMap<>();
             params.put("Username", inputUser);
             params.put("Password", inputPassword);
-            doRequest(params);
+            doRegisterRequest(params);
         }else{
             Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_LONG);
             toast.show();
         }
     }
 
-    public void doRequest(HashMap<String, String> params){
+    public void doRegisterRequest(HashMap<String, String> params){
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest postRequest = new JsonObjectRequest(register,
                 new JSONObject(params),
