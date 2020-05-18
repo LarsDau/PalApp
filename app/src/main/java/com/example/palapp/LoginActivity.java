@@ -53,8 +53,8 @@ public class LoginActivity extends AppCompatActivity {
 
         loginBtn = findViewById(R.id.buttonLogin);
         registerBtn = findViewById(R.id.buttonRegister);
-        userET = findViewById(R.id.editUser);
-        passwordET = findViewById(R.id.editPassword);
+        userET = findViewById(R.id.registerUser);
+        passwordET = findViewById(R.id.registerPassword);
     }
 
     public void goToRegisterClicked(View view){

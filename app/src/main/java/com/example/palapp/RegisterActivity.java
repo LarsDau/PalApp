@@ -4,13 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,40 +28,51 @@ public class RegisterActivity extends AppCompatActivity {
     String validate = "http://palaver.se.paluno.uni-due.de/api/user/register/api/user/validate";
     String change = "http://palaver.se.paluno.uni-due.de/api/user/password";
 
+    EditText user, password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        user = findViewById(R.id.registerUser);
+        password = findViewById(R.id.registerPassword);
     }
 
     public void registerClicked(View view){
-        RequestQueue queue = Volley.newRequestQueue(this);
+        String inputUser = user.getText().toString();
+        String inputPassword = password.getText().toString();
 
-        StringRequest postRequest = new StringRequest(Request.Method.POST, register,
-                new Response.Listener<String>()
-                {
+        if(inputUser.length() >= 5 && inputPassword.length() >= 5){
+            HashMap<String, String> params = new HashMap<>();
+            params.put("Username", inputUser);
+            params.put("Password", inputPassword);
+            doRequest(params);
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_LONG);
+            toast.show();
+        }
+    }
+
+    public void doRequest(HashMap<String, String> params){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        JsonObjectRequest postRequest = new JsonObjectRequest(register,
+                new JSONObject(params),
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
-                        System.out.println("Response: " + response);
+                    public void onResponse(JSONObject response) {
+                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 },
-                new Response.ErrorListener()
-                {
+                new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        System.out.println("Response Error: " + error.toString());
+                        Toast toast = Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 }
-        ) {
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("Username", "bgrfwb");
-                params.put("Password", "bgrb");
-                return params;
-            }
-        };
+        );
         queue.add(postRequest);
     }
 }
