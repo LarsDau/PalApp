@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
 
     String validate = "http://palaver.se.paluno.uni-due.de/api/user/validate";
     Boolean success = false;
+    public static Boolean fromLogout = false;
     SharedPreferences preferences;
 
     @Override
@@ -43,7 +44,9 @@ public class LoginActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
 
-        if(preferences.getString("remember", "").equals("true")){
+        if(preferences.getString("remember", "").equals("true") && fromLogout == false){
+            remBox.setChecked(true);
+
             String usernameData = preferences.getString("usernameData", "");
             String passwordData = preferences.getString("passwordData", "");
 
