@@ -22,12 +22,13 @@ public class SplashScreenActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+
         if(preferences.getString("remember", "").equals("true")){
             goToLoginActivity();
         }else{
             Logoluncher logoluncher= new Logoluncher();
             logoluncher.start();
-            goToLoginActivity();
+
         }
     }
 
@@ -41,13 +42,11 @@ public class SplashScreenActivity extends AppCompatActivity {
         public void run(){
             try{
                 sleep(5000);
+                goToLoginActivity();
             }
             catch(InterruptedException e){
               e.printStackTrace();
             }
-
         }
     }
-
-
 }

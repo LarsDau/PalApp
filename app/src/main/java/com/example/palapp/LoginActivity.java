@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
 
-        if(preferences.getString("remember", "").equals("true") && fromLogout == false){
+        if(preferences.getString("remember", "").equals("true")){
             remBox.setChecked(true);
 
             String usernameData = preferences.getString("usernameData", "");
@@ -57,7 +57,9 @@ public class LoginActivity extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("Username", usernameData);
                 params.put("Password", passwordData);
-                doLoginRequest(params);
+                if(fromLogout == false){
+                    doLoginRequest(params);
+                }
             }else{
                 Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_LONG);
                 toast.show();
@@ -86,8 +88,6 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor= preferences.edit();
                     editor.putString("remember", "true");
-                    editor.putString("usernameData", userET.getText().toString());
-                    editor.putString("passwordData", passwordET.getText().toString());
                     editor.apply();
                     Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_LONG).show();
                 }else{
@@ -116,6 +116,14 @@ public class LoginActivity extends AppCompatActivity {
             HashMap<String, String> params = new HashMap<>();
             params.put("Username", user);
             params.put("Password", password);
+
+            SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+            SharedPreferences.Editor editor= preferences.edit();
+            editor.putString("usernameData", userET.getText().toString());
+            editor.putString("passwordData", passwordET.getText().toString());
+            editor.apply();
+            Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_LONG).show();
+
             doLoginRequest(params);
         }else{
             Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_LONG);
@@ -126,9 +134,6 @@ public class LoginActivity extends AppCompatActivity {
 
     public void doLoginRequest(HashMap<String, String> params){
         RequestQueue queue = Volley.newRequestQueue(this);
-        System.out.println("Username of params" + params.get("Username"));
-        System.out.println("Password of params" + params.get("Password"));
-
         JsonObjectRequest postRequest = new JsonObjectRequest(validate,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
