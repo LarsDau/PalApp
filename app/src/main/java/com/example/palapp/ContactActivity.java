@@ -171,4 +171,11 @@ public class ContactActivity extends AppCompatActivity {
         );
         queue.add(postRequest);
     }
+
+    public void logoutClicked(View view){
+        Intent intent= new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        this.finish();
+        LoginActivity.fromLogout = true;
+    }
 }

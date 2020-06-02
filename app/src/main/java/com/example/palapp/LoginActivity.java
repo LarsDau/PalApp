@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -25,10 +26,12 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn, registerBtn;
     EditText userET, passwordET;
     CheckBox remBox;
+    ProgressBar progressBar;
 
     String validate = "http://palaver.se.paluno.uni-due.de/api/user/validate";
     Boolean success = false;
     public static Boolean fromLogout = false;
+    public static Boolean remember = false;
     SharedPreferences preferences;
 
     @Override
@@ -41,10 +44,34 @@ public class LoginActivity extends AppCompatActivity {
         userET = findViewById(R.id.loginUser);
         passwordET = findViewById(R.id.loginPassword);
         remBox = findViewById(R.id.rememberBox);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
 
-        if(preferences.getString("remember", "").equals("true")){
+        remBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(buttonView.isChecked()){
+                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor= preferences.edit();
+                    editor.putString("remember", "true");
+                    editor.apply();
+                }else{
+                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor= preferences.edit();
+                    editor.putString("remember", "false");
+                    editor.apply();
+                }
+            }
+        });
+        checkRemember();
+    }
+
+    public void checkRemember(){
+        //Wenn remember ausgewählt
+        if(remember == true && !fromLogout){
+            progressBar.setVisibility(View.VISIBLE);
             remBox.setChecked(true);
 
             String usernameData = preferences.getString("usernameData", "");
@@ -57,7 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("Username", usernameData);
                 params.put("Password", passwordData);
-                if(fromLogout == false){
+                if(!fromLogout){
                     doLoginRequest(params);
                 }
             }else{
@@ -76,29 +103,22 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 }
             }).start();
+        } else if(remember == false && !fromLogout){
+            progressBar.setVisibility(View.GONE);
+            remBox.setChecked(false);
 
-        } else if(preferences.getString("remember", "").equals("false")){
-            Toast.makeText(this, "Please sign in.", Toast.LENGTH_SHORT).show();
-        }
-
-        remBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(buttonView.isChecked()){
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor= preferences.edit();
-                    editor.putString("remember", "true");
-                    editor.apply();
-                    Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_LONG).show();
-                }else{
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor= preferences.edit();
-                    editor.putString("remember", "false");
-                    editor.apply();
-                    Toast.makeText(LoginActivity.this, "Unchecked", Toast.LENGTH_LONG).show();
+            if(userET.getText().length() >= 5 && passwordET.getText().length() >= 5){
+                HashMap<String, String> params = new HashMap<>();
+                params.put("Username", userET.getText().toString());
+                params.put("Password", passwordET.getText().toString());
+                if(!fromLogout){
+                    doLoginRequest(params);
                 }
+            }else{
+                Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
+                toast.show();
             }
-        });
+        }
     }
 
     public void startNextActivity(){
@@ -124,7 +144,6 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString("usernameData", userET.getText().toString());
             editor.putString("passwordData", passwordET.getText().toString());
             editor.apply();
-            Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_SHORT).show();
 
             doLoginRequest(params);
         }else{

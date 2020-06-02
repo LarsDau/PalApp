@@ -24,7 +24,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
 
         if(preferences.getString("remember", "").equals("true")){
-            goToLoginActivity();
+            goToLoginActivityWithRemember();
         }else{
             Logoluncher logoluncher= new Logoluncher();
             logoluncher.start();
@@ -32,21 +32,29 @@ public class SplashScreenActivity extends AppCompatActivity {
         }
     }
 
-    public void goToLoginActivity(){
-        Intent intent= new Intent(SplashScreenActivity.this, LoginActivity.class);
-        startActivity(intent);
-        SplashScreenActivity.this.finish();
-    }
-
     private class Logoluncher extends Thread{
         public void run(){
             try{
                 sleep(5000);
-                goToLoginActivity();
+                goToLoginActivityWithoutRemember();
             }
             catch(InterruptedException e){
               e.printStackTrace();
             }
         }
+    }
+
+    public void goToLoginActivityWithRemember(){
+        Intent intent= new Intent(SplashScreenActivity.this, LoginActivity.class);
+        LoginActivity.remember = true;
+        startActivity(intent);
+        SplashScreenActivity.this.finish();
+    }
+
+    public void goToLoginActivityWithoutRemember(){
+        Intent intent= new Intent(SplashScreenActivity.this, LoginActivity.class);
+        LoginActivity.remember = false;
+        startActivity(intent);
+        SplashScreenActivity.this.finish();
     }
 }
