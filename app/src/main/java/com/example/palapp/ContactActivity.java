@@ -79,7 +79,6 @@ public class ContactActivity extends AppCompatActivity {
     };
 
     public void updateList(ArrayList<ContactItem> list){
-        String getContacts = "http://palaver.se.paluno.uni-due.de/api/friends/get";
         HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
         params.put("Password", getIntent().getStringExtra("Password"));
@@ -87,15 +86,13 @@ public class ContactActivity extends AppCompatActivity {
         adapterContactList.clear();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest postRequest = new JsonObjectRequest(getContacts,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.getContacts,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
                         toast.show();
-
-                        System.out.println("Response: " + response);
 
                         try {
                             JSONArray jsonArray = response.getJSONArray("Data");
@@ -133,7 +130,6 @@ public class ContactActivity extends AppCompatActivity {
     }
 
     public void deleteContact(String user){
-        String addContact = "http://palaver.se.paluno.uni-due.de/api/friends/remove";
 
         HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
@@ -141,7 +137,7 @@ public class ContactActivity extends AppCompatActivity {
         params.put("Friend", user);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest postRequest = new JsonObjectRequest(addContact,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.deleteContact,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override

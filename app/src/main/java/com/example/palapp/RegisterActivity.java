@@ -18,12 +18,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
-
-    String base = "http://palaver.se.paluno.uni-due.de";
-    String register = "http://palaver.se.paluno.uni-due.de/api/user/register";
-    String validate = "http://palaver.se.paluno.uni-due.de/api/user/register/api/user/validate";
-    String change = "http://palaver.se.paluno.uni-due.de/api/user/password";
-
     EditText user, password;
 
     @Override
@@ -52,7 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void doRegisterRequest(HashMap<String, String> params){
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest postRequest = new JsonObjectRequest(register,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.registerUser,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
