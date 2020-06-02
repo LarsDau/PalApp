@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.login_activity);
 
         loginBtn = findViewById(R.id.buttonLogin);
-        registerBtn = findViewById(R.id.buttonRegister);
+        registerBtn = findViewById(R.id.buttonAdd);
         userET = findViewById(R.id.loginUser);
         passwordET = findViewById(R.id.loginPassword);
         remBox = findViewById(R.id.rememberBox);
@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                     doLoginRequest(params);
                 }
             }else{
-                Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_LONG);
+                Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
                 toast.show();
             }
 
@@ -103,7 +103,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void startNextActivity(){
         if(success){
-            Intent intent = new Intent(this , TestLoginActivity.class);
+            Intent intent = new Intent(this , ContactActivity.class);
+            intent.putExtra("Username", preferences.getString("usernameData", ""));
+            intent.putExtra("Password", preferences.getString("passwordData", ""));
             startActivity(intent);
         }
     }
@@ -122,11 +124,11 @@ public class LoginActivity extends AppCompatActivity {
             editor.putString("usernameData", userET.getText().toString());
             editor.putString("passwordData", passwordET.getText().toString());
             editor.apply();
-            Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_LONG).show();
+            Toast.makeText(LoginActivity.this, "Checked", Toast.LENGTH_SHORT).show();
 
             doLoginRequest(params);
         }else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
             toast.show();
         }
         startNextActivity();
@@ -139,7 +141,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
                         toast.show();
 
                         try {
@@ -158,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast toast = Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_LONG);
+                        Toast toast = Toast.makeText(getApplicationContext(), error.toString(), Toast.LENGTH_SHORT);
                         toast.show();
                         System.out.println("Error: " + error);
                     }
