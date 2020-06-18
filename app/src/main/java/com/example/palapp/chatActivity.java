@@ -5,9 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,7 +19,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.BindException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -29,9 +26,9 @@ public class chatActivity extends AppCompatActivity {
 
 
     private RecyclerView chat_verlauf ;
-    private RecyclerView.LayoutManager chatLayoutManager;
+    private LinearLayoutManager chatLayoutManager ;
     private chatAdapter chatAdapter;
-    private ArrayList<NachrichtItem> NachrichtItems ;
+    private ArrayList<NachrichtItem> NachrichtItems  ;
 
     String sendMessage ="http://palaver.se.paluno.uni-due.de/api/message/send";
     String getAllMessages ="http://palaver.se.paluno.uni-due.de/api/message/get";
@@ -47,22 +44,27 @@ public class chatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         downloadChat();
         setContentView(R.layout.activity_chat);
-
         NachrichtItems = new ArrayList<>();
+
         chat_verlauf = findViewById(R.id.chat_verlauf);
         chat_verlauf.setHasFixedSize(true);
-        LinearLayoutManager chatLayoutManager = new LinearLayoutManager(getApplicationContext());
-        chatLayoutManager.setStackFromEnd(true);
+        chatLayoutManager = new LinearLayoutManager(this);
+
+
         chatAdapter = new chatAdapter(NachrichtItems);
-        chat_verlauf.setAdapter(chatAdapter);
         chat_verlauf.setLayoutManager(chatLayoutManager);
+        chat_verlauf.setAdapter(chatAdapter);
+
+        chatLayoutManager.setStackFromEnd(true);
+
         textMessage = findViewById(R.id.toSendMessage);
 
 
     }
-
 
 
 
@@ -99,12 +101,15 @@ public class chatActivity extends AppCompatActivity {
                                 String DateTime = Data.getString("DateTime");
                                 NachrichtItem newNachricht = new NachrichtItem(sender,message,DateTime);
 
+
                                 NachrichtItems.add(newNachricht);
+                                chatAdapter.notifyDataSetChanged();
 
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
                     }
                 },
                 new Response.ErrorListener() {
@@ -115,6 +120,7 @@ public class chatActivity extends AppCompatActivity {
                     }
                 });
         queue.add(postRequest);
+
     }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
