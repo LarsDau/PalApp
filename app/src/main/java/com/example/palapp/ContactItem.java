@@ -1,5 +1,8 @@
 package com.example.palapp;
 
+import android.content.Intent;
+import android.view.View;
+
 public class ContactItem {
     private String mText1;
 
@@ -10,4 +13,6 @@ public class ContactItem {
     public String getmText1() {
         return mText1;
     }
+
+
 }

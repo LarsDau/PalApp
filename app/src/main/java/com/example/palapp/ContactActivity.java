@@ -9,7 +9,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,25 +31,42 @@ import java.util.HashMap;
 
 public class ContactActivity extends AppCompatActivity {
 
+    ///AINAS
+String fullname1 ;
+TextView whichUser ;
+private String password ;
+///AINAS
+
+
     private RecyclerView contactList;
     private ContactAdapter adapterContactList;
     private RecyclerView.LayoutManager managerContactList;
+    private ContactAdapter.onItemClickListener listener;
 
     private ArrayList<ContactItem> contactItemArrayList;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_contact);
+        //AINAS
+        setOnClickListener();
+       whichUser = findViewById(R.id.whichUser);
+       whichUser.setText(getIntent().getStringExtra("Username"));
+       password = getIntent().getStringExtra("Password");
+
+        //AINAS
 
         contactItemArrayList = new ArrayList<>();
         contactList = findViewById(R.id.contactlist);
         contactList.setHasFixedSize(true);
         managerContactList = new LinearLayoutManager(this);
-        adapterContactList = new ContactAdapter(contactItemArrayList);
+        adapterContactList = new ContactAdapter(contactItemArrayList , listener);
         new ItemTouchHelper(helper).attachToRecyclerView(contactList);
         contactList.setLayoutManager(managerContactList);
         contactList.setAdapter(adapterContactList);
@@ -62,7 +82,25 @@ public class ContactActivity extends AppCompatActivity {
             }
         });
     }
+////AINAS
+    private void setOnClickListener() {
+        listener = new ContactAdapter.onItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent intent = new Intent(getApplicationContext() , chatActivity.class);
+                intent.putExtra("recipient" , contactItemArrayList.get(position).getmText1() );
 
+                intent.putExtra("sender" , String.valueOf(whichUser.getText()));
+
+               intent.putExtra("Password" , password);
+                System.out.println("this is what im looking for " +  whichUser.toString());
+
+
+                startActivity(intent);
+            }
+        };
+    }
+/////AINAS
     ItemTouchHelper.SimpleCallback helper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -178,4 +216,5 @@ public class ContactActivity extends AppCompatActivity {
         this.finish();
         LoginActivity.fromLogout = true;
     }
+
 }

@@ -72,9 +72,9 @@ public class chatActivity extends AppCompatActivity {
 
    ////////////Download Chat from the server at the beginning ///////////
     private void downloadChat() {
-        String sender = "aaaaa";
-        String PasswordSender = "aaaaa";
-        String recipient = "bbbbb";
+        String sender = getIntent().getStringExtra("sender");
+        String PasswordSender = getIntent().getStringExtra("Password");
+        String recipient = getIntent().getStringExtra("recipient");
         HashMap<String,String> paramsChatRefresh = new HashMap<>();
         paramsChatRefresh.put("Username" , sender);
         paramsChatRefresh.put("Password" , PasswordSender);
@@ -137,9 +137,9 @@ public class chatActivity extends AppCompatActivity {
 
     ///////Send Message when button send is clicked //////////////////////////////////////////////
     public void sendClicked(View view){
-        String sender = "aaaaa";
-        String PasswordSender = "aaaaa";
-        String recipient = "bbbbb";
+        String sender = getIntent().getStringExtra("sender");
+        String PasswordSender = getIntent().getStringExtra("Password");
+        String recipient = getIntent().getStringExtra("recipient");
         String mime = "text/plain";
         String toSendMessage = textMessage.getText().toString();
 

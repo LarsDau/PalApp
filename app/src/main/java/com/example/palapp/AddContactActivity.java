@@ -76,9 +76,6 @@ public class AddContactActivity extends AppCompatActivity {
         );
         queue.add(postRequest);
     }
-    public void chatClicked(View view){
-        Intent intent = new Intent(this , chatActivity.class);
-        startActivity(intent);
-    }
+
 
 }

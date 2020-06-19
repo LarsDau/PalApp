@@ -11,22 +11,36 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
-
     private ArrayList<ContactItem> mContactList;
 
-    public static class ContactViewHolder extends RecyclerView.ViewHolder {
+
+    private onItemClickListener mListener;
+
+
+
+    public  class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView textView1;
         public TextView textView2;
 
-        public ContactViewHolder(@NonNull View itemView) {
+
+        public ContactViewHolder(@NonNull  View itemView ) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.contactName);
             textView2 = itemView.findViewById(R.id.lastMessage);
+            itemView.setOnClickListener(this);
+
+
+        }
+
+        @Override
+        public void onClick(View v) {
+           mListener.onItemClick(v,getAdapterPosition());
         }
     }
 
-    public ContactAdapter(ArrayList<ContactItem> contactList){
+    public ContactAdapter(ArrayList<ContactItem> contactList , onItemClickListener listener){
         mContactList = contactList;
+        this.mListener = listener;
     }
 
     @NonNull
@@ -58,4 +72,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         mContactList.addAll(list);
         notifyDataSetChanged();
     }
+
+
+    public interface onItemClickListener{
+        void onItemClick( View view , int position);
+    }
+
 }
