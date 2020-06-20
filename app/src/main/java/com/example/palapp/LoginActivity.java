@@ -28,6 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     CheckBox remBox;
     ProgressBar progressBar;
 
+
     String validate = "http://palaver.se.paluno.uni-due.de/api/user/validate";
     Boolean success = false;
     public static Boolean fromLogout = false;
