@@ -9,19 +9,11 @@ public class NachrichtItem {
         this.message = message;
         this.dateTime = dateTime;
     }
-
-
-    public String getSender() {
-        return sender;
-    }
+    public String getSender() { return sender;}
     public String getMessage() {
         return message;
     }
     public String getDateTime() {
         return dateTime;
     }
-
-
-
-
 }

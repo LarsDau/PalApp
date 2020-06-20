@@ -32,8 +32,6 @@ public class chatActivity extends AppCompatActivity {
 
     String sendMessage ="http://palaver.se.paluno.uni-due.de/api/message/send";
     String getAllMessages ="http://palaver.se.paluno.uni-due.de/api/message/get";
-
-
     EditText textMessage ;
 
 
@@ -43,7 +41,7 @@ public class chatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState );
 
 
         downloadChat();
@@ -229,7 +227,6 @@ public class chatActivity extends AppCompatActivity {
 
     private void addLastMessage(ArrayList<NachrichtItem> NachrichtItems) {
         chatAdapter.updateItems(NachrichtItems);
-
         chatAdapter.notifyDataSetChanged();
         chat_verlauf.scrollToPosition(NachrichtItems.size());
     }
