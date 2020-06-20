@@ -13,7 +13,16 @@
         android:supportsRtl="true"
         android:targetSandboxVersion="1"
         android:theme="@style/AppTheme">
-        <activity android:name=".DeleteContactActivity"></activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".chatActivity" />
+        <activity android:name=".DeleteContactActivity" />
         <activity android:name=".AddContactActivity" />
         <activity android:name=".ContactActivity">
 
@@ -32,8 +41,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".TestLoginActivity" />
-        <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">
 
             <!-- <intent-filter> -->
