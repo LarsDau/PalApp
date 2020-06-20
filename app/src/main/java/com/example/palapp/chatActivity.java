@@ -4,8 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -33,7 +35,7 @@ public class chatActivity extends AppCompatActivity {
     String sendMessage ="http://palaver.se.paluno.uni-due.de/api/message/send";
     String getAllMessages ="http://palaver.se.paluno.uni-due.de/api/message/get";
     EditText textMessage ;
-
+    Button button ;
 
 
 
@@ -42,7 +44,7 @@ public class chatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState );
-
+       button = findViewById(R.id.share_Location);
 
         downloadChat();
         setContentView(R.layout.activity_chat);
@@ -232,4 +234,8 @@ public class chatActivity extends AppCompatActivity {
     }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+public void LocationButtonClicked(View view){
+    Intent intent = new Intent(this , Map.class);
+    startActivity(intent);
+}
 }
