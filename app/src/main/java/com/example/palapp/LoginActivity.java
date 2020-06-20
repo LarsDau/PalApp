@@ -25,7 +25,6 @@ import java.util.HashMap;
 public class LoginActivity extends AppCompatActivity {
     Button loginBtn, registerBtn;
     EditText userET, passwordET;
-
     CheckBox remBox;
     ProgressBar progressBar;
 
@@ -127,10 +126,6 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(this , ContactActivity.class);
             intent.putExtra("Username", preferences.getString("usernameData", ""));
             intent.putExtra("Password", preferences.getString("passwordData", ""));
-
-
-
-
             startActivity(intent);
         }
     }

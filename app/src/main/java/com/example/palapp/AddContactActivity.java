@@ -36,8 +36,6 @@ public class AddContactActivity extends AppCompatActivity {
     }
 
     public void addContact(){
-        String addContact = "http://palaver.se.paluno.uni-due.de/api/friends/add";
-
         String name = contactName.getText().toString();
 
         HashMap<String, String> params = new HashMap<>();
@@ -46,7 +44,7 @@ public class AddContactActivity extends AppCompatActivity {
         params.put("Friend", name);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest postRequest = new JsonObjectRequest(addContact,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.addContact,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
