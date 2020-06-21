@@ -1,10 +1,11 @@
 <resources>
+
+    <string name="google_map_api_key">AIzaSyB8gT7qd-kkkT5zQXLmGHRBOZtL38div9c</string>
     <string name="app_name">PalApp</string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="google_maps_key">AIzaSyBY3c7RFvwzs06juEg0nzIU7PVERTIV3U8</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
@@ -115,4 +116,5 @@
     <string name="action_settings">Settings</string>
     <string name="sender1">sender1</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="title_activity_maps_">Maps_Activity</string>
 </resources>

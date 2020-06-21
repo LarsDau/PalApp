@@ -235,7 +235,7 @@ public class chatActivity extends AppCompatActivity {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 public void LocationButtonClicked(View view){
-    Intent intent = new Intent(this , Map.class);
+    Intent intent = new Intent(this ,Maps_Activity.class);
     startActivity(intent);
 }
 }
