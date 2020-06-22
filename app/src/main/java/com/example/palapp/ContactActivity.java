@@ -2,6 +2,8 @@ package com.example.palapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,13 +33,12 @@ import java.util.HashMap;
 
 public class ContactActivity extends AppCompatActivity {
 
-    ///AINAS
-String fullname1 ;
-TextView whichUser ;
-private String password ;
-///AINAS
+    private boolean tabletMode;
+    private FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
 
-
+    private TextView whichUser;
+    private String password;
     private RecyclerView contactList;
     private ContactAdapter adapterContactList;
     private RecyclerView.LayoutManager managerContactList;
@@ -47,20 +48,34 @@ private String password ;
 
     SwipeRefreshLayout swipeRefreshLayout;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_contact);
-        //AINAS
         setOnClickListener();
-       whichUser = findViewById(R.id.whichUser);
-       whichUser.setText(getIntent().getStringExtra("Username"));
-       password = getIntent().getStringExtra("Password");
 
-        //AINAS
+        fragmentManager = getFragmentManager();
+        System.out.println(getSupportFragmentManager().getFragments());
+
+        if(findViewById(R.id.contact2) != null){
+            tabletMode = true;
+        }else{
+            tabletMode = false;
+        }
+
+//        if(savedInstanceState == null){
+//            fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.add(R.id.contact1, new ContactFragment());
+//            fragmentTransaction.commit();
+//        }
+//
+        if(tabletMode){
+//            fragmentManager.beginTransaction().add(R.id.chatFragment, new ChatFragment()).commit();
+        }
+        whichUser = findViewById(R.id.whichUser);
+        whichUser.setText(getIntent().getStringExtra("Username"));
+        password = getIntent().getStringExtra("Password");
 
         contactItemArrayList = new ArrayList<>();
         contactList = findViewById(R.id.contactlist);
@@ -81,26 +96,34 @@ private String password ;
                 adapterContactList.notifyDataSetChanged();
             }
         });
+
     }
-////AINAS
+
     private void setOnClickListener() {
         listener = new ContactAdapter.onItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getApplicationContext() , chatActivity.class);
-                intent.putExtra("recipient" , contactItemArrayList.get(position).getmText1() );
+                if(tabletMode == false){
+                    Intent intent = new Intent(getApplicationContext() , chatActivity.class);
+                    intent.putExtra("recipient" , contactItemArrayList.get(position).getmText1() );
 
-                intent.putExtra("sender" , String.valueOf(whichUser.getText()));
+                    intent.putExtra("sender" , String.valueOf(whichUser.getText()));
 
-               intent.putExtra("Password" , password);
-                System.out.println("this is what im looking for " +  whichUser.toString());
+                    intent.putExtra("Password" , password);
+                    System.out.println("this is what im looking for " +  whichUser.toString());
 
-
-                startActivity(intent);
+                    startActivity(intent);
+                }else{
+                    ChatFragment chatFragment = (ChatFragment) fragmentManager.findFragmentById(R.id.chatFragmentx);
+                    chatFragment.setSender(String.valueOf(whichUser.getText()));
+                    chatFragment.setPasswordSender(password);
+                    chatFragment.setRecipient(contactItemArrayList.get(position).getmText1());
+                    chatFragment.start();
+                }
             }
         };
     }
-/////AINAS
+
     ItemTouchHelper.SimpleCallback helper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
