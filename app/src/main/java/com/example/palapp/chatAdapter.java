@@ -15,7 +15,9 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
 
     public ArrayList<NachrichtItem> mNachrichtItems ;
 
-    public static class chatviewholder extends RecyclerView.ViewHolder{
+    public  onItemClickListener mListener;
+
+    public  class chatviewholder extends RecyclerView.ViewHolder implements  View.OnClickListener{
        public TextView mSender ;
        public  TextView mMessage ;
        public  TextView mDate ;
@@ -27,15 +29,22 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
            mSender = itemView.findViewById(R.id.Sender_id);
            mMessage = itemView.findViewById(R.id.Nachricht_id);
            mDate = itemView.findViewById(R.id.Date_id);
+           itemView.setOnClickListener(this);
 
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            mListener.onItemClick(v,getAdapterPosition());
         }
     }
 
 
 
-    public chatAdapter(ArrayList<NachrichtItem> NachrichtItems){
+    public chatAdapter(ArrayList<NachrichtItem> NachrichtItems , onItemClickListener listener){
         mNachrichtItems = NachrichtItems;
+        this.mListener = listener;
     }
 
 
@@ -64,6 +73,11 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
 
     public void updateItems(ArrayList<NachrichtItem> nachrichtItems){
        mNachrichtItems = nachrichtItems;
+    }
+
+
+    public interface onItemClickListener{
+        void onItemClick( View view , int position);
     }
 
 }

@@ -59,7 +59,6 @@ private String password ;
        whichUser = findViewById(R.id.whichUser);
        whichUser.setText(getIntent().getStringExtra("Username"));
        password = getIntent().getStringExtra("Password");
-
         //AINAS
 
         contactItemArrayList = new ArrayList<>();
@@ -93,7 +92,7 @@ private String password ;
                 intent.putExtra("sender" , String.valueOf(whichUser.getText()));
 
                intent.putExtra("Password" , password);
-                System.out.println("this is what im looking for " +  whichUser.toString());
+
 
 
                 startActivity(intent);

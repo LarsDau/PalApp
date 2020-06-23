@@ -78,4 +78,5 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
         void onItemClick( View view , int position);
     }
 
+
 }
