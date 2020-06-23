@@ -11,10 +11,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +29,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ContactActivity extends AppCompatActivity {
+
+    private AddContactFragment addContactFragment;
+    private ChatFragment chatFragment;
 
     private boolean tabletMode;
     private FragmentTransaction fragmentTransaction;
@@ -56,7 +56,6 @@ public class ContactActivity extends AppCompatActivity {
         setOnClickListener();
 
         fragmentManager = getFragmentManager();
-        System.out.println(getSupportFragmentManager().getFragments());
 
         if(findViewById(R.id.contact2) != null){
             tabletMode = true;
@@ -64,15 +63,6 @@ public class ContactActivity extends AppCompatActivity {
             tabletMode = false;
         }
 
-//        if(savedInstanceState == null){
-//            fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.add(R.id.contact1, new ContactFragment());
-//            fragmentTransaction.commit();
-//        }
-//
-        if(tabletMode){
-//            fragmentManager.beginTransaction().add(R.id.chatFragment, new ChatFragment()).commit();
-        }
         whichUser = findViewById(R.id.whichUser);
         whichUser.setText(getIntent().getStringExtra("Username"));
         password = getIntent().getStringExtra("Password");
@@ -114,11 +104,13 @@ public class ContactActivity extends AppCompatActivity {
 
                     startActivity(intent);
                 }else{
-                    ChatFragment chatFragment = (ChatFragment) fragmentManager.findFragmentById(R.id.chatFragmentx);
+                    chatFragment = new ChatFragment();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerForChatAndAddContact, chatFragment);
+                    fragmentTransaction.commit();
                     chatFragment.setSender(String.valueOf(whichUser.getText()));
                     chatFragment.setPasswordSender(password);
                     chatFragment.setRecipient(contactItemArrayList.get(position).getmText1());
-                    chatFragment.start();
                 }
             }
         };
@@ -183,12 +175,7 @@ public class ContactActivity extends AppCompatActivity {
         queue.add(postRequest);
     }
 
-    public void goToAddContact(View view){
-        Intent intent = new Intent(this , AddContactActivity.class);
-        intent.putExtra("Username", getIntent().getStringExtra("Username"));
-        intent.putExtra("Password", getIntent().getStringExtra("Password"));
-        startActivity(intent);
-    }
+
 
     public void deleteContact(String user){
 
@@ -236,4 +223,27 @@ public class ContactActivity extends AppCompatActivity {
         LoginActivity.fromLogout = true;
     }
 
+    public void goToAddContact(View view){
+        if(tabletMode){
+            addContactFragment = new AddContactFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.containerForChatAndAddContact, addContactFragment);
+            fragmentTransaction.commit();
+            addContactFragment.setUser(getIntent().getStringExtra("Username"));
+            addContactFragment.setPassword(getIntent().getStringExtra("Password"));
+        }else{
+            Intent intent = new Intent(this , AddContactActivity.class);
+            intent.putExtra("Username", getIntent().getStringExtra("Username"));
+            intent.putExtra("Password", getIntent().getStringExtra("Password"));
+            startActivity(intent);
+        }
+    }
+
+    public void addContactClickedFragment(View view){
+        addContactFragment.addContactClickedFragment(view);
+    }
+
+    public void sendClickedFragment(View view){
+        chatFragment.sendClickedFragment(view);
+    }
 }

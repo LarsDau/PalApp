@@ -28,24 +28,8 @@ import java.util.HashMap;
 
 public class ChatFragment extends Fragment {
 
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-
-
     private String sender;
-
-    public void setPasswordSender(String passwordSender) {
-        PasswordSender = passwordSender;
-    }
-
     private String PasswordSender;
-
-    public void setRecipient(String recipient) {
-        this.recipient = recipient;
-    }
-
     private String recipient;
     private String mime;
     private String toSendMessage;
@@ -62,9 +46,7 @@ public class ChatFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        System.out.println("OCV");
         View myView = inflater.inflate(R.layout.fragment_chat, container, false);
-
 
         NachrichtItems = new ArrayList<>();
 
@@ -79,17 +61,19 @@ public class ChatFragment extends Fragment {
         chatLayoutManager.setStackFromEnd(true);
 
         textMessage = myView.findViewById(R.id.toSendMessage);
+
+        downloadChat();
         return myView;
     }
 
-    public void start(){
+    public void deleteChat(){
         for(int i = 0; i < NachrichtItems.size(); i++){
             NachrichtItems.remove(i);
         }
         downloadChat();
     }
 
-    private void downloadChat() {
+    public void downloadChat() {
         HashMap<String,String> paramsChatRefresh = new HashMap<>();
         paramsChatRefresh.put("Username" , sender);
         paramsChatRefresh.put("Password" , PasswordSender);
@@ -98,7 +82,8 @@ public class ChatFragment extends Fragment {
     }
 
     public void downloadChatRequest(HashMap<String, String> params){
-        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        System.out.println(getActivity());
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         JsonObjectRequest postRequest = new JsonObjectRequest(getAllMessages,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
@@ -139,7 +124,7 @@ public class ChatFragment extends Fragment {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     ///////Send Message when button send is clicked //////////////////////////////////////////////
-    public void sendClicked(View view){
+    public void sendClickedFragment(View view){
         mime = "text/plain";
         toSendMessage = textMessage.getText().toString();
 
@@ -180,10 +165,6 @@ public class ChatFragment extends Fragment {
         queue.add(postRequest);
     }
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
 
 
     ////RefreshChat  Adds the last Message to the conversation /////////////////////////
@@ -230,5 +211,17 @@ public class ChatFragment extends Fragment {
         chatAdapter.updateItems(NachrichtItems);
         chatAdapter.notifyDataSetChanged();
         chat_verlauf.scrollToPosition(NachrichtItems.size());
+    }
+
+    public void setSender(String sender) {
+        this.sender = sender;
+    }
+
+    public void setPasswordSender(String passwordSender) {
+        PasswordSender = passwordSender;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 }

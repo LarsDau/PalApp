@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChatFragment">
+    tools:context=".ChatFragment"
+    android:id="@+id/ChatFragment">
 
 
     <Button
@@ -16,6 +17,7 @@
         android:background="#0F719E"
         android:clickable="false"
         android:text="send"
+        android:onClick="sendClickedFragment"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

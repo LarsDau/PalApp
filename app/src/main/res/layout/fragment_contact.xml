@@ -29,6 +29,7 @@
         android:layout_marginEnd="32dp"
         android:background="@android:color/holo_green_light"
         android:text="Add contact"
+        android:onClick="goToAddContact"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
