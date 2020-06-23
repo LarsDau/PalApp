@@ -27,13 +27,10 @@ public class LoginActivity extends AppCompatActivity {
     EditText userET, passwordET;
     CheckBox remBox;
     ProgressBar progressBar;
+    SharedPreferences preferences;
 
-
-    String validate = "http://palaver.se.paluno.uni-due.de/api/user/validate";
-    Boolean success = false;
     public static Boolean fromLogout = false;
     public static Boolean remember = false;
-    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +53,14 @@ public class LoginActivity extends AppCompatActivity {
                 if(buttonView.isChecked()){
                     SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor= preferences.edit();
-                    editor.putString("remember", "true");
+                    editor.putBoolean("rem", true);
+                    remember = true;
                     editor.apply();
                 }else{
                     SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor= preferences.edit();
-                    editor.putString("remember", "false");
+                    editor.putBoolean("rem", false);
+                    remember = false;
                     editor.apply();
                 }
             }
@@ -70,8 +69,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void checkRemember(){
+        Boolean rem = preferences.getBoolean("rem", false);
         //Wenn remember ausgewählt
-        if(remember == true && !fromLogout){
+        if(rem == true && !fromLogout){
             progressBar.setVisibility(View.VISIBLE);
             remBox.setChecked(true);
 
@@ -81,54 +81,49 @@ public class LoginActivity extends AppCompatActivity {
             userET.setText(usernameData);
             passwordET.setText(passwordData);
 
-            if(usernameData.length() >= 5 && passwordData.length() >= 5){
-                HashMap<String, String> params = new HashMap<>();
-                params.put("Username", usernameData);
-                params.put("Password", passwordData);
-                if(!fromLogout){
-                    doLoginRequest(params);
-                }
-            }else{
-                Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
-                toast.show();
-            }
+            login();
+        } else if(rem && fromLogout){
+            progressBar.setVisibility(View.GONE);
+            remBox.setChecked(true);
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(5000);
-                        startNextActivity();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
-        } else if(remember == false && !fromLogout){
+            String usernameData = preferences.getString("usernameData", "");
+            String passwordData = preferences.getString("passwordData", "");
+
+            userET.setText(usernameData);
+            passwordET.setText(passwordData);
+
+        } else if(!rem && !fromLogout){
             progressBar.setVisibility(View.GONE);
             remBox.setChecked(false);
 
-            if(userET.getText().length() >= 5 && passwordET.getText().length() >= 5){
-                HashMap<String, String> params = new HashMap<>();
-                params.put("Username", userET.getText().toString());
-                params.put("Password", passwordET.getText().toString());
-                if(!fromLogout){
-                    doLoginRequest(params);
-                }
-            }else{
-                Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
-                toast.show();
-            }
+            userET.setText("");
+            passwordET.setText("");
+        } else if(!rem && fromLogout){
+            progressBar.setVisibility(View.GONE);
+            remBox.setChecked(false);
+
+            userET.setText("");
+            passwordET.setText("");
         }
     }
 
-    public void startNextActivity(){
-        if(success){
-            Intent intent = new Intent(this , ContactActivity.class);
-            intent.putExtra("Username", preferences.getString("usernameData", ""));
-            intent.putExtra("Password", preferences.getString("passwordData", ""));
-            startActivity(intent);
+    public void login(){//remember login
+        if(userET.getText().length() >= 5 && passwordET.getText().length() >= 5){
+            HashMap<String, String> params = new HashMap<>();
+            params.put("Username", userET.getText().toString());
+            params.put("Password", passwordET.getText().toString());
+            doLoginRequest(params);
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
+            toast.show();
         }
+    }
+
+    public void startNextActivity(){//start ContactActivity
+        Intent intent = new Intent(this , ContactActivity.class);
+        intent.putExtra("Username", preferences.getString("usernameData", ""));
+        intent.putExtra("Password", preferences.getString("passwordData", ""));
+        startActivity(intent);
     }
 
     public void loginClicked(View view){
@@ -155,8 +150,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void doLoginRequest(HashMap<String, String> params){
+        System.out.println("Doing request");
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest postRequest = new JsonObjectRequest(validate,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.validateUser,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -166,12 +162,12 @@ public class LoginActivity extends AppCompatActivity {
 
                         try {
                             if(response.getString("MsgType").equals("1")){
-                                success = true;
                                 System.out.println("Response Code: " + response.getString("MsgType"));
+                                startNextActivity();
                             }else{
-                                success = false;
                                 System.out.println("Response Code: " + response.getString("MsgType"));
                             }
+                            System.out.println("Request finished");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
