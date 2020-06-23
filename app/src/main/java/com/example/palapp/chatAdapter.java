@@ -36,6 +36,9 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
 
         @Override
         public void onClick(View v) {
+            if(mNachrichtItems.get(getAdapterPosition()).isClickable()){
+                return;
+            }
             mListener.onItemClick(v,getAdapterPosition());
         }
     }
@@ -78,6 +81,7 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
 
     public interface onItemClickListener{
         void onItemClick( View view , int position);
+
     }
 
 }

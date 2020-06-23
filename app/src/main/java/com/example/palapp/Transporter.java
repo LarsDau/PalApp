@@ -34,4 +34,8 @@ public class Transporter {
 
         return this.Latitude;
     }
+    public String setUrl(String url) {
+
+        return this.url;
+    }
 }
