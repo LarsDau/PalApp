@@ -1,5 +1,6 @@
 package com.example.palapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -30,7 +31,6 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences preferences;
 
     public static Boolean fromLogout = false;
-    public static Boolean remember = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,21 +51,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(buttonView.isChecked()){
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor= preferences.edit();
+//                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("rem", true);
-                    remember = true;
                     editor.apply();
                 }else{
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+//                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor= preferences.edit();
                     editor.putBoolean("rem", false);
-                    remember = false;
                     editor.apply();
                 }
             }
         });
-        checkRemember();
+
+        if(savedInstanceState == null){//not null if device rotates, prevents automatic login after every orientationchange/ null at start
+            checkRemember();
+        }
     }
 
     public void checkRemember(){
@@ -81,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
             userET.setText(usernameData);
             passwordET.setText(passwordData);
 
-            login();
+            loginWithRemember();
         } else if(rem && fromLogout){
             progressBar.setVisibility(View.GONE);
             remBox.setChecked(true);
@@ -107,7 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void login(){//remember login
+    public void loginWithRemember(){//remember login
         if(userET.getText().length() >= 5 && passwordET.getText().length() >= 5){
             HashMap<String, String> params = new HashMap<>();
             params.put("Username", userET.getText().toString());
@@ -135,7 +136,7 @@ public class LoginActivity extends AppCompatActivity {
             params.put("Username", user);
             params.put("Password", password);
 
-            SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+//            SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
             SharedPreferences.Editor editor= preferences.edit();
             editor.putString("usernameData", userET.getText().toString());
             editor.putString("passwordData", passwordET.getText().toString());
@@ -146,7 +147,6 @@ public class LoginActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
             toast.show();
         }
-        startNextActivity();
     }
 
     public void doLoginRequest(HashMap<String, String> params){
@@ -188,5 +188,10 @@ public class LoginActivity extends AppCompatActivity {
     public void goToRegisterClicked(View view){
         Intent intent = new Intent(this , RegisterActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {//Save Data for Orientationchange
+        super.onSaveInstanceState(outState);
     }
 }
