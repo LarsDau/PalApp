@@ -162,10 +162,10 @@ public class LoginActivity extends AppCompatActivity {
 
                         try {
                             if(response.getString("MsgType").equals("1")){
-                                System.out.println("Response Code: " + response.getString("MsgType"));
+                                System.out.println("Login successfull");
                                 startNextActivity();
                             }else{
-                                System.out.println("Response Code: " + response.getString("MsgType"));
+                                System.out.println("Wrong Data for Login");
                             }
                             System.out.println("Request finished");
                         } catch (JSONException e) {
