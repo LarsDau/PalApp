@@ -18,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -49,25 +50,25 @@ public class chatActivity extends AppCompatActivity {
         chat_verlauf.setAdapter(chatAdapter);
         chatLayoutManager.setStackFromEnd(true);
         textMessage = findViewById(R.id.toSendMessage);
-        Thread t = new Thread(){
-            @Override
-            public void run(){
-                while(!isInterrupted()){
-                    try{
-                     Thread.sleep(1000);
-                     runOnUiThread(new Runnable() {
-                         @Override
-                         public void run() {
-                            downloadChat(NachrichtItems);
-                         }
-                     });
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-        t.start();
+       // Thread t = new Thread(){
+         //   @Override
+           // public void run(){
+             //   while(!isInterrupted()){
+               //     try{
+                 //    Thread.sleep(1000);
+                   //  runOnUiThread(new Runnable() {
+                     //    @Override
+                       //  public void run() {
+                         //   downloadChat(NachrichtItems);
+                         //}
+                     //});
+                    //} catch (InterruptedException e) {
+                     //   e.printStackTrace();
+                   // }
+               // }
+           // }
+        //};
+        //t.start();
     }
     ////AINAS
     private void setOnClickListener() {
@@ -111,13 +112,14 @@ public class chatActivity extends AppCompatActivity {
                                 String sender = Data.getString("Sender");
                                 String message = Data.getString("Data");
                                 String DateTime = Data.getString("DateTime");
-                                NachrichtItem newNachricht = null;
-                                if(message.charAt(message.length()-1) == '0' ){
-                                     newNachricht = new NachrichtItem(sender,message,DateTime,true);
-                                }
-                               else{
-                                   newNachricht = new NachrichtItem(sender,message,DateTime,false);
-                                }
+                                NachrichtItem newNachricht = new NachrichtItem(sender,message, DateTime);
+                               // NachrichtItem newNachricht = null;
+                               // if(message.charAt(message.length()-1) == '0' ){
+                                 //    newNachricht = new NachrichtItem(sender,message,DateTime,true);
+                              //  }
+                              // else{
+                              //     newNachricht = new NachrichtItem(sender,message,DateTime,false);
+                               // }
 
 
                                 newNachrichtenItems.add(newNachricht);

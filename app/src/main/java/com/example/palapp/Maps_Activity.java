@@ -76,9 +76,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
     @Override
     public  void onMapReady(GoogleMap googleMap) {
         LatLng latLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
-        transporter.setlatitude(currentLocation.getLatitude());
-        transporter.setlonitude(currentLocation.getLongitude());
-        transporter.setUrl(latLng.toString());
+
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Here I am ");
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng , 5 ));
@@ -150,12 +148,8 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
     private String buildSendLocationMessage() {
       String url = " ";
         StringBuilder stringBuilder = new StringBuilder();
-        String firstPart = "Click here for Location ";
+        String firstPart = "Click here for Location 0";
 
-        stringBuilder.append(transporter.getLatitude());
-        stringBuilder.append(url);
-        stringBuilder.append(" ");
-        stringBuilder.append("1");
         return stringBuilder.toString();
     }
 

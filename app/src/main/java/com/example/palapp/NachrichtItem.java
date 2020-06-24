@@ -6,11 +6,11 @@ public class NachrichtItem {
     String dateTime;
     boolean clickable = false ;
 
-    public NachrichtItem(String sender, String message, String dateTime , boolean clickable) {
+    public NachrichtItem(String sender, String message, String dateTime ) {
         this.sender = sender;
         this.message = message;
         this.dateTime = dateTime;
-        this.clickable = clickable;
+        //this.clickable = clickable;
 
     }
 
