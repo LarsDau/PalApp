@@ -117,10 +117,10 @@ public class chatActivity extends AppCompatActivity {
                                  // NachrichtItem newNachricht = new NachrichtItem(sender, message, DateTime);
                                  NachrichtItem newNachricht = null ;
                                  if(message.charAt(message.length()-1) == '0' ){
-                                    newNachricht = new NachrichtItem(sender,message,DateTime,true);
+                                    newNachricht = new NachrichtItem(sender,message.substring(0,message.length()-1),DateTime,true);
                                   }
                                  else if (message.charAt(message.length()-1 )=='1'){
-                                     newNachricht = new NachrichtItem(sender,message,DateTime,false);
+                                     newNachricht = new NachrichtItem(sender,message.substring(0,message.length()-1),DateTime,false);
 
                                  }else{
                                      // Ra Bin hier if you want to add DATA in Chat but tell me before you do anything so i can explain to you
