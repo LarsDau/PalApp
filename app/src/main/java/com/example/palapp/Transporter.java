@@ -2,40 +2,17 @@ package com.example.palapp;
 
 public class Transporter {
 
-   private String url;
-    double longitude;
-    double Latitude;
-    public Transporter(String url , double Latitude,double longitude){
-        this.url = url ;
+
+    String longitude;
+    String Latitude;
+    public Transporter( String Latitude,String Longitude){
         this.Latitude = Latitude;
-        this.longitude = longitude;
+        this.longitude = Longitude;
     }
-    public String geturl() {
-        return url;
-    }
-    public String seturl() {
-        return url;
-    }
-
-
-
-    public double getlongitude() {
+    public String getlongitude() {
         return longitude;
     }
-    public double setlonitude(double longitude) {
-        return this.longitude;
-    }
-
-    public double getLatitude() {
+    public String getLatitude() {
         return Latitude;
-    }
-
-    public double setlatitude(double Latitude) {
-
-        return this.Latitude;
-    }
-    public String setUrl(String url) {
-
-        return this.url;
     }
 }

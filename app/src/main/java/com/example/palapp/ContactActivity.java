@@ -9,10 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,25 +27,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ContactActivity extends AppCompatActivity {
-
-    ///AINAS
-String fullname1 ;
+ ///AINAS
 TextView whichUser ;
 private String password ;
-///AINAS
+ ///AINAS
 
 
     private RecyclerView contactList;
     private ContactAdapter adapterContactList;
     private RecyclerView.LayoutManager managerContactList;
     private ContactAdapter.onItemClickListener listener;
-
     private ArrayList<ContactItem> contactItemArrayList;
-
     SwipeRefreshLayout swipeRefreshLayout;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

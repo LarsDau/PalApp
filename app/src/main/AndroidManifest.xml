@@ -20,10 +20,11 @@
         android:supportsRtl="true"
         android:targetSandboxVersion="1"
         android:theme="@style/AppTheme">
+        <activity android:name=".maps_receiver"></activity>
         <activity
             android:name=".Maps_Activity"
             android:label="@string/title_activity_maps_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Maps" />
         <activity
             android:name=".RegisterActivity"
