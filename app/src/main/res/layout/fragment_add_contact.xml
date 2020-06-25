@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright"
-    tools:context=".AddContactActivity">
+    tools:context=".AddContactFragment"
+    android:background="@android:color/holo_blue_bright">
 
     <Button
-        android:id="@+id/buttonAdd"
+        android:id="@+id/buttonAddFragment"
         android:layout_width="200dp"
         android:layout_height="80dp"
         android:layout_marginBottom="100dp"
         android:background="@android:color/holo_green_light"
-        android:onClick="addContactClicked"
+        android:onClick="addContactClickedFragment"
         android:text="Add contact"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -21,14 +21,14 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/contactName"
+        android:id="@+id/contactNameFragment"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:background="@android:color/holo_green_light"
         android:ems="10"
         android:hint="Type in new contact"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAddFragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"

@@ -2,6 +2,8 @@ package com.example.palapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,7 +11,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,29 +32,45 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ContactActivity extends AppCompatActivity {
- ///AINAS
-TextView whichUser ;
-private String password ;
- ///AINAS
 
+    private AddContactFragment addContactFragment;
+    private ChatFragment chatFragment;
 
+    private boolean tabletMode;
+    private FragmentTransaction fragmentTransaction;
+    private FragmentManager fragmentManager;
+
+    private TextView whichUser;
+    private String password;
     private RecyclerView contactList;
     private ContactAdapter adapterContactList;
     private RecyclerView.LayoutManager managerContactList;
     private ContactAdapter.onItemClickListener listener;
+
     private ArrayList<ContactItem> contactItemArrayList;
+
     SwipeRefreshLayout swipeRefreshLayout;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_contact);
-        //AINAS
         setOnClickListener();
-       whichUser = findViewById(R.id.whichUser);
-       whichUser.setText(getIntent().getStringExtra("Username"));
-       password = getIntent().getStringExtra("Password");
-        //AINAS
+
+        fragmentManager = getFragmentManager();
+
+        if(findViewById(R.id.contact2) != null){
+            tabletMode = true;
+        }else{
+            tabletMode = false;
+        }
+
+        whichUser = findViewById(R.id.whichUser);
+        whichUser.setText(getIntent().getStringExtra("Username"));
+        password = getIntent().getStringExtra("Password");
 
         contactItemArrayList = new ArrayList<>();
         contactList = findViewById(R.id.contactlist);
@@ -71,25 +92,34 @@ private String password ;
             }
         });
     }
-////AINAS
+
     private void setOnClickListener() {
         listener = new ContactAdapter.onItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getApplicationContext() , chatActivity.class);
-                intent.putExtra("recipient" , contactItemArrayList.get(position).getmText1() );
+                if(tabletMode == false){
+                    Intent intent = new Intent(getApplicationContext() , chatActivity.class);
+                    intent.putExtra("recipient" , contactItemArrayList.get(position).getmText1() );
 
-                intent.putExtra("sender" , String.valueOf(whichUser.getText()));
+                    intent.putExtra("sender" , String.valueOf(whichUser.getText()));
 
-               intent.putExtra("Password" , password);
+                    intent.putExtra("Password" , password);
+                    System.out.println("this is what im looking for " +  whichUser.toString());
 
-
-
-                startActivity(intent);
+                    startActivity(intent);
+                }else{
+                    chatFragment = new ChatFragment();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerForChatAndAddContact, chatFragment);
+                    fragmentTransaction.commit();
+                    chatFragment.setSender(String.valueOf(whichUser.getText()));
+                    chatFragment.setPasswordSender(password);
+                    chatFragment.setRecipient(contactItemArrayList.get(position).getmText1());
+                }
             }
         };
     }
-/////AINAS
+
     ItemTouchHelper.SimpleCallback helper = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -106,7 +136,6 @@ private String password ;
     };
 
     public void updateList(ArrayList<ContactItem> list){
-        String getContacts = "http://palaver.se.paluno.uni-due.de/api/friends/get";
         HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
         params.put("Password", getIntent().getStringExtra("Password"));
@@ -114,15 +143,13 @@ private String password ;
         adapterContactList.clear();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest postRequest = new JsonObjectRequest(getContacts,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.getContacts,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
                         toast.show();
-
-                        System.out.println("Response: " + response);
 
                         try {
                             JSONArray jsonArray = response.getJSONArray("Data");
@@ -152,15 +179,9 @@ private String password ;
         queue.add(postRequest);
     }
 
-    public void goToAddContact(View view){
-        Intent intent = new Intent(this , AddContactActivity.class);
-        intent.putExtra("Username", getIntent().getStringExtra("Username"));
-        intent.putExtra("Password", getIntent().getStringExtra("Password"));
-        startActivity(intent);
-    }
+
 
     public void deleteContact(String user){
-        String addContact = "http://palaver.se.paluno.uni-due.de/api/friends/remove";
 
         HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
@@ -168,7 +189,7 @@ private String password ;
         params.put("Friend", user);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        JsonObjectRequest postRequest = new JsonObjectRequest(addContact,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.deleteContact,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -206,4 +227,27 @@ private String password ;
         LoginActivity.fromLogout = true;
     }
 
+    public void goToAddContact(View view){
+        if(tabletMode){
+            addContactFragment = new AddContactFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.containerForChatAndAddContact, addContactFragment);
+            fragmentTransaction.commit();
+            addContactFragment.setUser(getIntent().getStringExtra("Username"));
+            addContactFragment.setPassword(getIntent().getStringExtra("Password"));
+        }else{
+            Intent intent = new Intent(this , AddContactActivity.class);
+            intent.putExtra("Username", getIntent().getStringExtra("Username"));
+            intent.putExtra("Password", getIntent().getStringExtra("Password"));
+            startActivity(intent);
+        }
+    }
+
+    public void addContactClickedFragment(View view){
+        addContactFragment.addContactClickedFragment(view);
+    }
+
+    public void sendClickedFragment(View view){
+        chatFragment.sendClickedFragment(view);
+    }
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/contact2">
+
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="com.example.palapp.ContactFragment"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="4"></fragment>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"></View>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerForChatAndAddContact"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="6"></androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

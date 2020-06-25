@@ -23,7 +23,7 @@ public class SplashScreenActivity extends AppCompatActivity {
 
         preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
 
-        if(preferences.getString("remember", "").equals("true")){
+        if(preferences.getBoolean("rem", false)){
             goToLoginActivityWithRemember();
         }else{
             Logoluncher logoluncher= new Logoluncher();
@@ -46,14 +46,12 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     public void goToLoginActivityWithRemember(){
         Intent intent= new Intent(SplashScreenActivity.this, LoginActivity.class);
-        LoginActivity.remember = true;
         startActivity(intent);
         SplashScreenActivity.this.finish();
     }
 
     public void goToLoginActivityWithoutRemember(){
         Intent intent= new Intent(SplashScreenActivity.this, LoginActivity.class);
-        LoginActivity.remember = false;
         startActivity(intent);
         SplashScreenActivity.this.finish();
     }
