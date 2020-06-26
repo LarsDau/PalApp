@@ -38,9 +38,7 @@ public class ChatFragment extends Fragment {
     private LinearLayoutManager chatLayoutManager ;
     private chatAdapter chatAdapter;
     private ArrayList<NachrichtItem> NachrichtItems  ;
-
-    String sendMessage ="http://palaver.se.paluno.uni-due.de/api/message/send";
-    String getAllMessages ="http://palaver.se.paluno.uni-due.de/api/message/get";
+    private chatAdapter.onItemClickListener listener;
     EditText textMessage ;
 
 
@@ -54,7 +52,7 @@ public class ChatFragment extends Fragment {
         chat_verlauf.setHasFixedSize(true);
         chatLayoutManager = new LinearLayoutManager(getActivity());
 
-        chatAdapter = new chatAdapter(NachrichtItems);
+        chatAdapter = new chatAdapter(NachrichtItems, listener);
         chat_verlauf.setLayoutManager(chatLayoutManager);
         chat_verlauf.setAdapter(chatAdapter);
 
@@ -62,66 +60,110 @@ public class ChatFragment extends Fragment {
 
         textMessage = myView.findViewById(R.id.toSendMessage);
 
-        downloadChat();
+        downloadChat(NachrichtItems);
+
+        Thread t = new Thread(){
+            @Override
+            public void run(){
+                while(!isInterrupted()){
+                    try{
+                        Thread.sleep(1000);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                downloadChat(NachrichtItems);
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t.start();
         return myView;
     }
+
+    //listener für location button fehlt
 
     public void deleteChat(){
         for(int i = 0; i < NachrichtItems.size(); i++){
             NachrichtItems.remove(i);
         }
-        downloadChat();
+        downloadChat(NachrichtItems);
     }
 
-    public void downloadChat() {
-        HashMap<String,String> paramsChatRefresh = new HashMap<>();
-        paramsChatRefresh.put("Username" , sender);
-        paramsChatRefresh.put("Password" , PasswordSender);
-        paramsChatRefresh.put("Recipient" , recipient);
-        downloadChatRequest(paramsChatRefresh);
+    private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems) {
+        HashMap<String, String> paramsChatRefresh = new HashMap<>();
+        paramsChatRefresh.put("Username", sender);
+        paramsChatRefresh.put("Password", PasswordSender);
+        paramsChatRefresh.put("Recipient", recipient);
+        downloadChatRequest(paramsChatRefresh, altNachrichtenItems);
     }
 
-    public void downloadChatRequest(HashMap<String, String> params){
-        System.out.println(getActivity());
+    public void downloadChatRequest(HashMap<String, String> params, final ArrayList<NachrichtItem> altNachrichtenItems) {
+        final ArrayList<NachrichtItem> newNachrichtenItems = new ArrayList<>();
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        JsonObjectRequest postRequest = new JsonObjectRequest(getAllMessages,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.getConversation,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
-
-
-
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONArray jsonArray = response.getJSONArray("Data");
-                            for(int i = 0 ; i<jsonArray.length();i++){
-                                JSONObject Data =  jsonArray.getJSONObject(i);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject Data = jsonArray.getJSONObject(i);
                                 String sender = Data.getString("Sender");
                                 String message = Data.getString("Data");
                                 String DateTime = Data.getString("DateTime");
-                                NachrichtItem newNachricht = new NachrichtItem(sender,message,DateTime);
+                                // NachrichtItem newNachricht = new NachrichtItem(sender, message, DateTime);
+                                NachrichtItem newNachricht = null ;
+                                if(message.charAt(message.length()-1) == '0' ){
+                                    newNachricht = new NachrichtItem(sender,message.substring(0,message.length()-1),DateTime,true);
+                                }
+                                else if (message.charAt(message.length()-1 )=='1'){
+                                    newNachricht = new NachrichtItem(sender,message.substring(0,message.length()-1),DateTime,false);
 
-                                NachrichtItems.add(newNachricht);
+                                }else{
+                                    // Ra Bin hier if you want to add DATA in Chat but tell me before you do anything so i can explain to you
+                                }
+                                newNachrichtenItems.add(newNachricht);
+                                if (newNachrichtenItems.size() > altNachrichtenItems.size()) {
+                                    addLastMessage(newNachrichtenItems);
+                                }
                                 chatAdapter.notifyDataSetChanged();
-
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast toast = Toast.makeText(getActivity(), error.toString(), Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(getActivity().getApplicationContext(), error.toString(), Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
         queue.add(postRequest);
-
     }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public  String messageLatitude(String message){
+        String newMessage = message.substring(29);
+        int space1 = newMessage.indexOf(' ');
+        String Latitude = newMessage.substring(0,space1);
+        return Latitude;
+    }
+
+    public String messageLongitude(String Message){
+        String newMessage = Message.substring(29);
+        int space1 = newMessage.indexOf(' ');
+        int space2 = newMessage.indexOf(' ' , space1+1);
+        String Longitude = newMessage.substring(space1+1,space2);
+        return Longitude;
+    }
 
     ///////Send Message when button send is clicked //////////////////////////////////////////////
     public void sendClickedFragment(View view){
@@ -135,15 +177,13 @@ public class ChatFragment extends Fragment {
         paramsMessage.put("Mimetype" , mime);
         paramsMessage.put("Data", toSendMessage);
         sendMessageRequest(paramsMessage);
-
         textMessage.setText("");
         refreshChat(paramsMessage);
-
     }
 
     public void sendMessageRequest(HashMap<String, String> params){
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        JsonObjectRequest postRequest = new JsonObjectRequest(sendMessage,
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.sendMessage,
                 new JSONObject(params),
                 new Response.Listener<JSONObject>() {
 
@@ -169,25 +209,17 @@ public class ChatFragment extends Fragment {
 
     ////RefreshChat  Adds the last Message to the conversation /////////////////////////
     private void refreshChat(HashMap<String, String> params) {
-
-
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-
-        JsonObjectRequest postRequest = new JsonObjectRequest(getAllMessages, new JSONObject(params), new Response.Listener<JSONObject>() {
+        JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.getConversation, new JSONObject(params), new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
-
                     JSONArray jsonArray = response.getJSONArray("Data");
 
                     JSONObject Data = jsonArray.getJSONObject(NachrichtItems.size());
                     String sender = Data.getString("Sender");
                     String message = Data.getString("Data");
                     String DateTime = Data.getString("DateTime");
-
-                    NachrichtItem newNacho = new NachrichtItem(sender, message, DateTime);
-
-                    NachrichtItems.add(newNacho);
 
                     addLastMessage(NachrichtItems);
 
@@ -204,7 +236,6 @@ public class ChatFragment extends Fragment {
                     }
                 });
         queue.add(postRequest);
-
     }
 
     private void addLastMessage(ArrayList<NachrichtItem> NachrichtItems) {
