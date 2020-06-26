@@ -20,6 +20,13 @@
         android:supportsRtl="true"
         android:targetSandboxVersion="1"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
         <activity android:name=".maps_receiver"></activity>
         <activity
             android:name=".Maps_Activity"

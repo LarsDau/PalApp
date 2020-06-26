@@ -52,6 +52,8 @@ public class chatActivity extends AppCompatActivity {
         chat_verlauf.setAdapter(chatAdapter);
         chatLayoutManager.setStackFromEnd(true);
         textMessage = findViewById(R.id.toSendMessage);
+        // for notification Service
+
          Thread t = new Thread(){
            @Override
          public void run(){
