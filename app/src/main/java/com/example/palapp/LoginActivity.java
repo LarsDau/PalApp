@@ -18,12 +18,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.HashMap;
 
 public class LoginActivity extends AppCompatActivity {
+
     Button loginBtn, registerBtn;
     EditText userET, passwordET;
     CheckBox remBox;
@@ -67,12 +69,17 @@ public class LoginActivity extends AppCompatActivity {
         if(savedInstanceState == null){//not null if device rotates, prevents automatic login after every orientationchange/ null at start
             checkRemember();
         }
+
+
+        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
+        int status = googleApiAvailability.isGooglePlayServicesAvailable(getApplicationContext());
+        System.out.println("STATUS: " + status);
     }
 
     public void checkRemember(){
         Boolean rem = preferences.getBoolean("rem", false);
         //Wenn remember ausgewählt
-        if(rem == true && !fromLogout){
+        if(rem && !fromLogout){
             progressBar.setVisibility(View.VISIBLE);
             remBox.setChecked(true);
 
@@ -149,7 +156,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void doLoginRequest(HashMap<String, String> params){
+    public void doLoginRequest(final HashMap<String, String> params){
         System.out.println("Doing request");
         RequestQueue queue = Volley.newRequestQueue(this);
         JsonObjectRequest postRequest = new JsonObjectRequest(PalaverLinks.validateUser,
@@ -163,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             if(response.getString("MsgType").equals("1")){
                                 System.out.println("Login successfull");
+                                runFCM(params);
                                 startNextActivity();
                             }else{
                                 System.out.println("Wrong Data for Login");
@@ -188,6 +196,12 @@ public class LoginActivity extends AppCompatActivity {
     public void goToRegisterClicked(View view){
         Intent intent = new Intent(this , RegisterActivity.class);
         startActivity(intent);
+    }
+
+    public void runFCM(HashMap<String, String> params){
+        FCMRunnable fcmRunnable = new FCMRunnable(params);
+        Thread thread = new Thread(fcmRunnable);
+        thread.start();
     }
 
     @Override

@@ -35,6 +35,7 @@ public class ContactActivity extends AppCompatActivity {
 
     private AddContactFragment addContactFragment;
     private ChatFragment chatFragment;
+    private MapsFragment mapsFragment;
 
     private boolean tabletMode;
     private FragmentTransaction fragmentTransaction;
@@ -136,7 +137,7 @@ public class ContactActivity extends AppCompatActivity {
     };
 
     public void updateList(ArrayList<ContactItem> list){
-        HashMap<String, String> params = new HashMap<>();
+        final HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
         params.put("Password", getIntent().getStringExtra("Password"));
 
@@ -182,7 +183,6 @@ public class ContactActivity extends AppCompatActivity {
 
 
     public void deleteContact(String user){
-
         HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
         params.put("Password", getIntent().getStringExtra("Password"));
@@ -245,6 +245,15 @@ public class ContactActivity extends AppCompatActivity {
 
     public void addContactClickedFragment(View view){
         addContactFragment.addContactClickedFragment(view);
+    }
+
+    public void LocationButtonClicked(View view){
+        if(tabletMode){
+            mapsFragment = new MapsFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.containerForChatAndAddContact, addContactFragment);
+            fragmentTransaction.commit();
+        }
     }
 
     public void sendClickedFragment(View view){

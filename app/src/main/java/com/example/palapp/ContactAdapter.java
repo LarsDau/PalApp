@@ -12,29 +12,22 @@ import java.util.ArrayList;
 
 public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactViewHolder> {
     private ArrayList<ContactItem> mContactList;
-
-
     private onItemClickListener mListener;
-
-
 
     public  class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView textView1;
         public TextView textView2;
-
 
         public ContactViewHolder(@NonNull  View itemView ) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.contactName);
             textView2 = itemView.findViewById(R.id.lastMessage);
             itemView.setOnClickListener(this);
-
-
         }
 
         @Override
         public void onClick(View v) {
-           mListener.onItemClick(v,getAdapterPosition());
+            mListener.onItemClick(v,getAdapterPosition());
         }
     }
 
