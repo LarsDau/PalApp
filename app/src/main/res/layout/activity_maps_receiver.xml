@@ -13,17 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/send_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="52dp"
-        android:onClick="sendLocationClicked"
-        android:text="Location Send" />
-
     <TextView
         android:id="@+id/Longitude"
         android:layout_width="97dp"

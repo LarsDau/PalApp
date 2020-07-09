@@ -42,6 +42,7 @@ public class ContactActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
 
     private TextView whichUser;
+    private String rec;
     private String password;
     private RecyclerView contactList;
     private ContactAdapter adapterContactList;
@@ -51,8 +52,6 @@ public class ContactActivity extends AppCompatActivity {
     private ArrayList<ContactItem> contactItemArrayList;
 
     SwipeRefreshLayout swipeRefreshLayout;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,9 +100,7 @@ public class ContactActivity extends AppCompatActivity {
                 if(tabletMode == false){
                     Intent intent = new Intent(getApplicationContext() , chatActivity.class);
                     intent.putExtra("recipient" , contactItemArrayList.get(position).getmText1() );
-
                     intent.putExtra("sender" , String.valueOf(whichUser.getText()));
-
                     intent.putExtra("Password" , password);
                     System.out.println("this is what im looking for " +  whichUser.toString());
 
@@ -116,6 +113,7 @@ public class ContactActivity extends AppCompatActivity {
                     chatFragment.setSender(String.valueOf(whichUser.getText()));
                     chatFragment.setPasswordSender(password);
                     chatFragment.setRecipient(contactItemArrayList.get(position).getmText1());
+                    rec = contactItemArrayList.get(position).getmText1();
                 }
             }
         };
@@ -179,8 +177,6 @@ public class ContactActivity extends AppCompatActivity {
         );
         queue.add(postRequest);
     }
-
-
 
     public void deleteContact(String user){
         HashMap<String, String> params = new HashMap<>();
@@ -247,13 +243,15 @@ public class ContactActivity extends AppCompatActivity {
         addContactFragment.addContactClickedFragment(view);
     }
 
-    public void LocationButtonClicked(View view){
+    public void LocationButtonClickedFragment(View view) {
         if(tabletMode){
-            mapsFragment = new MapsFragment();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.containerForChatAndAddContact, addContactFragment);
-            fragmentTransaction.commit();
+            Intent intent = new Intent(this, Maps_Activity.class);
+            intent.putExtra("Sender", getIntent().getStringExtra("Username"));
+            intent.putExtra("password", getIntent().getStringExtra("Password"));
+            intent.putExtra("Recipient", rec);
+            startActivity(intent);
         }
+        System.out.println("CLICKED");
     }
 
     public void sendClickedFragment(View view){

@@ -18,7 +18,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -53,12 +52,10 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(buttonView.isChecked()){
-//                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("rem", true);
                     editor.apply();
                 }else{
-//                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
                     SharedPreferences.Editor editor= preferences.edit();
                     editor.putBoolean("rem", false);
                     editor.apply();
@@ -69,11 +66,6 @@ public class LoginActivity extends AppCompatActivity {
         if(savedInstanceState == null){//not null if device rotates, prevents automatic login after every orientationchange/ null at start
             checkRemember();
         }
-
-
-        GoogleApiAvailability googleApiAvailability = GoogleApiAvailability.getInstance();
-        int status = googleApiAvailability.isGooglePlayServicesAvailable(getApplicationContext());
-        System.out.println("STATUS: " + status);
     }
 
     public void checkRemember(){
@@ -129,6 +121,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void startNextActivity(){//start ContactActivity
         Intent intent = new Intent(this , ContactActivity.class);
+        intent.putExtra("Sender", preferences.getString("usernameData", ""));
         intent.putExtra("Username", preferences.getString("usernameData", ""));
         intent.putExtra("Password", preferences.getString("passwordData", ""));
         startActivity(intent);
@@ -143,7 +136,6 @@ public class LoginActivity extends AppCompatActivity {
             params.put("Username", user);
             params.put("Password", password);
 
-//            SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
             SharedPreferences.Editor editor= preferences.edit();
             editor.putString("usernameData", userET.getText().toString());
             editor.putString("passwordData", passwordET.getText().toString());

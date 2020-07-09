@@ -37,12 +37,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
     Button button;
-     private  ArrayList<Transporter> transporters ;
-
-
-
-
-
+    private  ArrayList<Transporter> transporters ;
     private static final int REQUEST_CODE = 101;
 
     @Override
@@ -54,12 +49,6 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         transporters = new ArrayList<>();
         fetchLastLocation();
-
-
-
-
-
-
     }
 
     private void fetchLastLocation() {
@@ -80,8 +69,6 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
                     SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_Activity);
                     supportMapFragment.getMapAsync(Maps_Activity.this);
-
-
                 }
             }
         });
@@ -98,8 +85,6 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         }
 
     }
-
-
 
     @Override
     public  void onMapReady(GoogleMap googleMap) {
@@ -129,15 +114,13 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
         paramsMessage.put("Mimetype" , mime);
         paramsMessage.put("Data", toSendMessage);
         sendLocationRequest(paramsMessage);
-
     }
-    private String buildSendLocationMessage() {
 
+    private String buildSendLocationMessage() {
         StringBuilder stringBuilder = new StringBuilder();
 
         String firstPart = "Click here for my Location : ";
         stringBuilder.append(firstPart);
-
 
         stringBuilder.append(transporters.get(0).getLatitude());
         stringBuilder.append(" ");
@@ -169,7 +152,4 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
                 });
         queue.add(postRequest);
     }
-
-
-
 }

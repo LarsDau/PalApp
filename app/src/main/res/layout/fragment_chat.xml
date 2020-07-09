@@ -62,4 +62,16 @@
         app:layout_constraintEnd_toStartOf="@+id/send_message"
         app:layout_constraintHorizontal_bias="0.355"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/share_Location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:onClick="LocationButtonClickedFragment"
+        android:text="Location"
+        app:layout_constraintBottom_toTopOf="@+id/send_message"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

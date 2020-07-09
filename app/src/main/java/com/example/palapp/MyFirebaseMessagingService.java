@@ -15,8 +15,6 @@ import com.google.firebase.messaging.RemoteMessage;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d("FCM", "onMessageReceived ausgeführt");
-        System.out.println("Message received");
         createNotificationChannel();
 
         NotificationCompat.Builder notificationBuilder =

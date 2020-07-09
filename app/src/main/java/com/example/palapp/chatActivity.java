@@ -17,7 +17,6 @@ public class chatActivity extends AppCompatActivity{
     private RecyclerView chat_verlauf;
     private LinearLayoutManager chatLayoutManager;
     private chatAdapter chatAdapter;
-
     private ArrayList<NachrichtItem> NachrichtItems;
     private chatAdapter.onItemClickListener listener;
     private EditText textMessage;
@@ -30,7 +29,7 @@ public class chatActivity extends AppCompatActivity{
         setOnClickListener();
         NachrichtItems = new ArrayList<>();
 
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_chat);//Warum?
         chat_verlauf = findViewById(R.id.chat_verlauf);
         chat_verlauf.setHasFixedSize(true);
         chatLayoutManager = new LinearLayoutManager(this);
@@ -42,27 +41,26 @@ public class chatActivity extends AppCompatActivity{
 
         downloadChat(NachrichtItems);
 
-        Thread t = new Thread(){
-           @Override
-         public void run(){
-           while(!isInterrupted()){
-                try{
-                    Thread.sleep(1000);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            downloadChat(NachrichtItems);
-                        }
-                    });
-                }catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-         }
-        };
-        t.start();
+//        Thread t = new Thread(){
+//           @Override
+//         public void run(){
+//           while(!isInterrupted()){
+//                try{
+//                    Thread.sleep(1000);
+//                    runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            downloadChat(NachrichtItems);
+//                        }
+//                    });
+//                }catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//         }
+//        };
+//        t.start();
     }
-
 
     private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems) {
         String sender = getIntent().getStringExtra("sender");
@@ -76,7 +74,7 @@ public class chatActivity extends AppCompatActivity{
             object.addProperty("Recipient", recipient);
 
             ChatAsyncTask chatAsyncTask = new ChatAsyncTask(object, altNachrichtenItems ,getApplicationContext() , chatAdapter, chat_verlauf, "download");
-            chatAsyncTask.execute();
+            NachrichtItems = (ArrayList<NachrichtItem>) chatAsyncTask.execute().get();
 
         }catch (Exception e){
             e.printStackTrace();
@@ -130,11 +128,11 @@ public class chatActivity extends AppCompatActivity{
         textMessage.setText("");
     }
 
-    private void addLastMessage(ArrayList<NachrichtItem> NachrichtItems) {
-        chatAdapter.updateItems(NachrichtItems);
-        chatAdapter.notifyDataSetChanged();
-        chat_verlauf.scrollToPosition(NachrichtItems.size());
-    }
+//    private void addLastMessage(ArrayList<NachrichtItem> NachrichtItems) {
+//        chatAdapter.updateItems(NachrichtItems);
+//        chatAdapter.notifyDataSetChanged();
+//        chat_verlauf.scrollToPosition(NachrichtItems.size());
+//    }
 
     public void LocationButtonClicked(View view) {
         Intent intent = new Intent(this, Maps_Activity.class);
