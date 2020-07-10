@@ -20,6 +20,12 @@
         android:supportsRtl="true"
         android:targetSandboxVersion="1"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".Image_receiver"
+            android:label="@string/title_activity_image_receiver"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".storageActivity" />
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">
@@ -27,7 +33,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <activity android:name=".maps_receiver"></activity>
+
+        <activity android:name=".maps_receiver" />
         <activity
             android:name=".Maps_Activity"
             android:label="@string/title_activity_maps_"

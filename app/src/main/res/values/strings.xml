@@ -117,4 +117,5 @@
     <string name="sender1">sender1</string>
     <string name="title_activity_register">RegisterActivity</string>
     <string name="title_activity_maps_">Maps_Activity</string>
+    <string name="title_activity_image_receiver">Image_receiver</string>
 </resources>

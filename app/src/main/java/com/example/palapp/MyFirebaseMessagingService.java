@@ -20,7 +20,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "id")
                 .setContentTitle("push notification")
                 .setContentText(remoteMessage.getData().get("text"))
-                .setSmallIcon(R.drawable.arrow_circle_down_24px)
+
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         NotificationManager notificationManager=(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());

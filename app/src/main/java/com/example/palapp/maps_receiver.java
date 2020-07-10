@@ -36,21 +36,24 @@ public class maps_receiver extends FragmentActivity implements OnMapReadyCallbac
 
     Location currentLocation;
     FusedLocationProviderClient fusedLocationProviderClient;
-     double latitude ;
-     double longitude ;
-
+    double latitude;
+    double longitude;
+    private GoogleMap mMap;
     private static final int REQUEST_CODE = 101;
+    String message ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps_receiver);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-        latitude = Double.valueOf(getIntent().getStringExtra("latitude"));
-        longitude = Double.valueOf(getIntent().getStringExtra("longitude"));
-        fetchLastLocation();
+        SupportMapFragment map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_Activity2));
+        map.getMapAsync(this);
+
+        message = trimMessage(getIntent().getStringExtra("Message"));
+
+        latitude = Double.parseDouble(messageLatitude(message));
+        longitude = Double.parseDouble(messageLongitude(message));
     }
-
-
     private void fetchLastLocation() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE);
@@ -62,13 +65,7 @@ public class maps_receiver extends FragmentActivity implements OnMapReadyCallbac
             public void onSuccess(Location location) {
                 if (location != null) {
                     currentLocation = location;
-
-
-                    Toast.makeText(getApplicationContext(), latitude+ " " +longitude, Toast.LENGTH_SHORT).show();
-                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_Activity);
-                    supportMapFragment.getMapAsync(maps_receiver.this);
-
-
+                    Toast.makeText(getApplicationContext(), latitude + " " + longitude, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -76,22 +73,52 @@ public class maps_receiver extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        switch (requestCode){
+        switch (requestCode) {
             case REQUEST_CODE:
-                if(grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     fetchLastLocation();
                 }
-                break ;
+                break;
         }
-
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng latLng = new LatLng(latitude,longitude);
-        MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Here I am ");
-        googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-        googleMap.addMarker(markerOptions);
+        mMap = googleMap;
+        double mLat = latitude;
+        double mLon = longitude;
+        LatLng mylocation = new LatLng(mLat, mLon);
+        mMap.addMarker(new MarkerOptions().position(mylocation).snippet("TEXT BELLOW TITLE").title("TITLE")).showInfoWindow();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylocation,15));
+    }
+
+    public  String messageLatitude(String message){
+
+
+        String Latitude = message.substring(0,10);
+
+        return Latitude;
+    }
+    public String messageLongitude(String Message){
+
+        String Longitude =  Message.substring(11,19);
+        return Longitude;
+
+    }
+    public String trimMessage(String message){
+        String result = message.replace("Click Here for Location : ","");
+        return result;
     }
 
 
