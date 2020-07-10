@@ -35,7 +35,6 @@ public class ContactActivity extends AppCompatActivity {
 
     private AddContactFragment addContactFragment;
     private ChatFragment chatFragment;
-    private MapsFragment mapsFragment;
 
     private boolean tabletMode;
     private FragmentTransaction fragmentTransaction;

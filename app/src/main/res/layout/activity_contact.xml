@@ -10,13 +10,13 @@
 
     <TextView
         android:id="@+id/contactTitle"
-        android:layout_width="109dp"
-        android:layout_height="54dp"
+        android:layout_width="99dp"
+        android:layout_height="0dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Contacts of"
-        android:textSize="24sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/logoutButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -24,8 +24,8 @@
 
     <Button
         android:id="@+id/addContactButton"
-        android:layout_width="136dp"
-        android:layout_height="117dp"
+        android:layout_width="104dp"
+        android:layout_height="58dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:background="@android:color/holo_green_light"
@@ -47,7 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addContactButton">
+        app:layout_constraintTop_toBottomOf="@+id/logoutButton">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/contactlist"
@@ -65,13 +65,13 @@
         android:layout_height="55dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:background="@android:color/holo_green_light"
-        android:text="Logout"
         android:onClick="logoutClicked"
-        app:layout_constraintBottom_toTopOf="@+id/swiperefresh"
+        android:text="Logout"
         app:layout_constraintEnd_toStartOf="@+id/addContactButton"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="73dp" />
 
     <TextView
         android:id="@+id/whichUser"
@@ -84,9 +84,24 @@
         android:lineSpacingExtra="24sp"
         android:text="TextView"
         android:textAlignment="center"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toTopOf="@+id/logoutButton"
         app:layout_constraintEnd_toStartOf="@+id/addContactButton"
         app:layout_constraintStart_toEndOf="@+id/contactTitle"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
+        android:text="Swipe down to update, swipe left to delete"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/swiperefresh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logoutButton"
+        app:layout_constraintTop_toBottomOf="@+id/addContactButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
