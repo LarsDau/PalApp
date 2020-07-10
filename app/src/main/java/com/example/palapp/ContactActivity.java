@@ -271,6 +271,10 @@ public class ContactActivity extends AppCompatActivity {
         chatFragment.sendClickedFragment(view);
     }
 
+    public void updateChatButton(View view){
+        chatFragment.updateChatButton(view);
+    }
+
     public void sendFileClicked(View view) {
         Intent intent = new Intent(this, storageActivity.class);
         intent.putExtra("Sender", sender);

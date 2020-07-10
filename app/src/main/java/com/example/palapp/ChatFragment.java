@@ -13,6 +13,7 @@ import android.widget.EditText;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.gson.JsonObject;
 
@@ -31,6 +32,8 @@ public class ChatFragment extends Fragment {
 
     private String sender, PasswordSender, recipient, mime, toSendMessage;
 
+    private SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_chat, container, false);
@@ -47,14 +50,32 @@ public class ChatFragment extends Fragment {
         chatLayoutManager.setStackFromEnd(true);
         textMessage = myView.findViewById(R.id.toSendMessage);
 
+
         downloadChat(NachrichtItems);
 
+        swipeRefreshLayout = myView.findViewById(R.id.swiperefreshChat);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                downloadChat(NachrichtItems);
+                swipeRefreshLayout.setRefreshing(false);
+                chatAdapter.notifyDataSetChanged();
+            }
+        });
+
+        return myView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+//        focus = true;
 //        Thread t = new Thread(){
 //            @Override
 //            public void run(){
-//                while(!isInterrupted()){
+//                while(focus == true){
 //                    try{
-//                        Thread.sleep(2000);
+//                        Thread.sleep(3000);
 //                        getActivity().runOnUiThread(new Runnable() {
 //                            @Override
 //                            public void run() {
@@ -68,7 +89,6 @@ public class ChatFragment extends Fragment {
 //            }
 //        };
 //        t.start();
-        return myView;
     }
 
     private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems) {
@@ -141,6 +161,10 @@ public class ChatFragment extends Fragment {
                 startActivity(intent);
             }
         };
+    }
+
+    public void updateChatButton(View view){
+        downloadChat(NachrichtItems);
     }
 
     public void setSender(String sender) {
