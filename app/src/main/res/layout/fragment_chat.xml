@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ChatFragment"
-    android:id="@+id/ChatFragment">
+    android:id="@+id/ChatFragment"
+    android:background="@android:color/holo_blue_bright">
 
 
     <Button
@@ -23,26 +24,17 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/chat_verlauff"
-        android:layout_width="357dp"
-        android:layout_height="452dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="48dp"
         app:layout_constraintBottom_toTopOf="@+id/toSendMessage"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="96dp"
-        android:layout_height="46dp"
-        android:background="#4CAF50"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/abc_vector_test"
-        tools:srcCompat="@android:drawable/ic_menu_revert" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/toSendMessage"

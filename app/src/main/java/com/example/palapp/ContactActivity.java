@@ -43,6 +43,7 @@ public class ContactActivity extends AppCompatActivity {
     private TextView whichUser;
     private String rec;
     private String password;
+    private String sender;
     private RecyclerView contactList;
     private ContactAdapter adapterContactList;
     private RecyclerView.LayoutManager managerContactList;
@@ -69,6 +70,7 @@ public class ContactActivity extends AppCompatActivity {
 
         whichUser = findViewById(R.id.whichUser);
         whichUser.setText(getIntent().getStringExtra("Username"));
+        sender = whichUser.getText().toString();
         password = getIntent().getStringExtra("Password");
 
         contactItemArrayList = new ArrayList<>();
@@ -255,5 +257,14 @@ public class ContactActivity extends AppCompatActivity {
 
     public void sendClickedFragment(View view){
         chatFragment.sendClickedFragment(view);
+    }
+
+    public void sendFileClicked(View view) {
+        Intent intent = new Intent(this, storageActivity.class);
+        intent.putExtra("Sender", sender);
+        intent.putExtra("password", password);
+        intent.putExtra("Recipient", rec);
+        System.out.println(sender + password + rec);
+        startActivity(intent);
     }
 }

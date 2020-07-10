@@ -136,6 +136,7 @@ public class chatActivity extends AppCompatActivity{
         intent.putExtra("Recipient", getIntent().getStringExtra("recipient"));
         startActivity(intent);
     }
+
     public void sendFileClicked(View view) {
         Intent intent = new Intent(this, storageActivity.class);
         intent.putExtra("Sender", getIntent().getStringExtra("sender"));
