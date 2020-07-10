@@ -1,16 +1,24 @@
 package com.example.palapp;
 
-public class NachrichtItem {
-    String sender;
-    String message;
-    String dateTime;
-    boolean clickable = false ;
 
-    public NachrichtItem(String sender, String message, String dateTime , boolean clickable) {
+
+
+public class NachrichtItem {
+
+    String sender;
+
+    String message;
+
+    String dateTime;
+
+    int clickable  ;
+
+    public NachrichtItem(String sender, String message, String dateTime ,int clickable) {
         this.sender = sender;
         this.message = message;
         this.dateTime = dateTime;
         this.clickable = clickable;
+
     }
     public String getSender() {
         return sender;
@@ -21,8 +29,12 @@ public class NachrichtItem {
     public String getDateTime() {
         return dateTime;
     }
-    public boolean isClickable() {
+    public int getClickable() {
         return clickable;
     }
 
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 }

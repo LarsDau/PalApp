@@ -1,10 +1,13 @@
 package com.example.palapp;
 
+import android.content.Context;
+import android.content.Intent;
 import android.icu.text.Transliterator;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,29 +20,52 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
 
     public  onItemClickListener mListener;
 
-    public  class chatviewholder extends RecyclerView.ViewHolder implements  View.OnClickListener{
-       public TextView mSender ;
-       public  TextView mMessage ;
-       public  TextView mDate ;
+    public  class chatviewholder extends RecyclerView.ViewHolder implements  View.OnClickListener {
+        public TextView mSender;
+        public TextView mMessage;
+        public TextView mDate;
 
-
+        private Context context ;
         public chatviewholder(@NonNull View itemView) {
             super(itemView);
-
-           mSender = itemView.findViewById(R.id.Sender_id);
-           mMessage = itemView.findViewById(R.id.Nachricht_id);
-           mDate = itemView.findViewById(R.id.Date_id);
-           itemView.setOnClickListener(this);
+            context = itemView.getContext();
+            mSender = itemView.findViewById(R.id.Sender_id);
+            mMessage = itemView.findViewById(R.id.Nachricht_id);
+            mDate = itemView.findViewById(R.id.Date_id);
+            itemView.setOnClickListener(this);
 
 
         }
 
+     //   @Override
+       // public void onClick(View v) {
+
+
+           // if (mNachrichtItems.get(getAdapterPosition()).isClickable() == true) {
+           //     return;
+          //  }
+         //   mListener.onItemClick(v, getAdapterPosition());
+       // }
         @Override
         public void onClick(View v) {
-            if(mNachrichtItems.get(getAdapterPosition()).isClickable()){
-                return;
+
+             final Intent intent ;
+            switch (mNachrichtItems.get(getAdapterPosition()).getClickable()){
+                case 1:
+                     intent = new Intent(context , maps_receiver.class);
+                     intent.putExtra("Message" , mNachrichtItems.get(getAdapterPosition()).getMessage());
+                    break;
+
+                case 2:
+                    intent =  new Intent( context ,Image_receiver.class);
+                    intent.putExtra("Message" , mNachrichtItems.get(getAdapterPosition()).getMessage());
+                    break;
+
+
+                default:
+                   return ;
             }
-            mListener.onItemClick(v,getAdapterPosition());
+            context.startActivity(intent);
         }
     }
 

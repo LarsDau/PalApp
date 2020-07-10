@@ -67,7 +67,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
                     Toast.makeText(getApplicationContext(), currentLocation.getLatitude() + "" + currentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
 
-                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_Activity);
+                    SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_Activity2);
                     supportMapFragment.getMapAsync(Maps_Activity.this);
                 }
             }
@@ -94,7 +94,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
         MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Here I am ");
         googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 5));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
 
         googleMap.addMarker(markerOptions);
     }
@@ -119,8 +119,7 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
     private String buildSendLocationMessage() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        String firstPart = "Click here for my Location : ";
-        stringBuilder.append(firstPart);
+        stringBuilder.append("Click Here for Location : ");
 
         stringBuilder.append(transporters.get(0).getLatitude());
         stringBuilder.append(" ");
