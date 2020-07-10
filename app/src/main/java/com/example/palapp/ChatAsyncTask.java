@@ -62,10 +62,9 @@ public class ChatAsyncTask extends AsyncTask {
                 System.out.println(line);
             }
             text = sb.toString();
+
             JSONObject message = new JSONObject(text);
             reader.close();
-
-            System.out.println("MESSAGE SEND: " + text + " JSONObject: " + message);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -97,7 +96,6 @@ public class ChatAsyncTask extends AsyncTask {
             JSONArray jsonArray = o.getJSONArray("Data");
             reader.close();
 
-            System.out.println("LENGTH: " + jsonArray.length());
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject Data = jsonArray.getJSONObject(i);
                 String sender = Data.getString("Sender");
@@ -105,21 +103,16 @@ public class ChatAsyncTask extends AsyncTask {
                 String DateTime = Data.getString("DateTime");
                 // NachrichtItem newNachricht = new NachrichtItem(sender, message, DateTime);
                 NachrichtItem newNachricht = null ;
-                if(message.charAt(message.length()-1) == '0' ){
-                    newNachricht = new NachrichtItem(sender,message.substring(0,message.length()-1),DateTime,true);
-                }
-                else if (message.charAt(message.length()-1 )=='1'){
-                    newNachricht = new NachrichtItem(sender,message.substring(0,message.length()-1),DateTime,false);
-                }
+                newNachricht = new NachrichtItem(sender,message,DateTime,checkClickable(message));
+                System.out.println("MESSAGE: " + newNachricht.getMessage() + "CLICKABLE: "+ newNachricht.getClickable());
+                newNachricht.setMessage(trimMessage(newNachricht.getMessage()));
                 newNachrichtenItems.add(newNachricht);
                 size = newNachrichtenItems.size();
                 if (newNachrichtenItems.size() > altNachrichtenItems.size()) {
                     chatAdapter.updateItems(newNachrichtenItems);
                     size = newNachrichtenItems.size();
                 }
-                System.out.println(chatAdapter.getItemCount());
             }
-            System.out.println("End of download");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -141,5 +134,23 @@ public class ChatAsyncTask extends AsyncTask {
         super.onPostExecute(o);
         chatAdapter.notifyDataSetChanged();
         chat_verlauf.scrollToPosition(size);
+    }
+
+    private int checkClickable(String message) {
+        if (message.charAt(message.length() -1 ) == '0') {
+            return 0;
+        }
+        else if (message.charAt(message.length() -1 ) == '1'){
+            return 1 ;
+        }
+        return 2 ;
+    }
+
+    private String trimMessage(String message){
+        String result = null ;
+        if ((message != null) && (message.length() > 0)) {
+            result = message.substring(0, message.length()-1);
+        }
+        return result;
     }
 }

@@ -49,25 +49,25 @@ public class ChatFragment extends Fragment {
 
         downloadChat(NachrichtItems);
 
-//        Thread t = new Thread(){
-//            @Override
-//            public void run(){
-//                while(!isInterrupted()){
-//                    try{
-//                        Thread.sleep(1000);
-//                        getActivity().runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                downloadChat(NachrichtItems);
-//                            }
-//                        });
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        };
-//        t.start();
+        Thread t = new Thread(){
+            @Override
+            public void run(){
+                while(!isInterrupted()){
+                    try{
+                        Thread.sleep(2000);
+                        getActivity().runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                downloadChat(NachrichtItems);
+                            }
+                        });
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        t.start();
         return myView;
     }
 

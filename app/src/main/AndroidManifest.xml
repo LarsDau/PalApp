@@ -18,26 +18,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:targetSandboxVersion="1"
-        android:theme="@style/AppTheme">
-        <activity
-            android:name=".Image_receiver"
-            android:label="@string/title_activity_image_receiver"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".storageActivity" />
-
-        <activity android:name=".maps_receiver" />
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
 
-        <service
-            android:name=".MyFirebaseMessagingService"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
+        <activity
+            android:name=".Image_receiver"
+            android:label="@string/title_activity_image_receiver"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
 
-        <activity android:name=".maps_receiver"></activity>
+        <activity android:name=".storageActivity" />
+        <activity android:name=".maps_receiver" />
         <activity
             android:name=".Maps_Activity"
             android:label="@string/title_activity_maps_"
@@ -52,9 +43,14 @@
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".chatActivity" />
-        <activity android:name=".AddContactActivity" />
-        <activity android:name=".ContactActivity">
-        </activity>
+        <activity
+            android:name=".AddContactActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ContactActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <activity android:name=".SplashScreenActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,13 +59,20 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
