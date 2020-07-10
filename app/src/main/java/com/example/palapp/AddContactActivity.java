@@ -38,7 +38,7 @@ public class AddContactActivity extends AppCompatActivity {
     public void addContact(){
         String name = contactName.getText().toString();
 
-        HashMap<String, String> params = new HashMap<>();
+        final HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
         params.put("Password", getIntent().getStringExtra("Password"));
         params.put("Friend", name);
@@ -49,14 +49,18 @@ public class AddContactActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
-
                         try {
                             if(response.getString("MsgType").equals("1")){
-                                System.out.println("Response Code: " + response.getString("MsgType"));
+                                Toast toast = Toast.makeText(getApplicationContext(), params.get("Friend") + " is now your friend", Toast.LENGTH_SHORT);
+                                toast.show();
                             }else{
-                                System.out.println("Response Code: " + response.getString("MsgType"));
+                                if(response.getString("Info").equals("Freund bereits auf der Liste")){
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Contact is already your friend", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }else{
+                                    Toast toast = Toast.makeText(getApplicationContext(), "Contact does not exist", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

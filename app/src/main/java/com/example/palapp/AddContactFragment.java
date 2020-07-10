@@ -44,7 +44,7 @@ public class AddContactFragment extends Fragment {
         String name = contactName.getText().toString();
         System.out.println(name);
 
-        HashMap<String, String> params = new HashMap<>();
+        final HashMap<String, String> params = new HashMap<>();
         params.put("Username", user);
         params.put("Password", password);
         params.put("Friend", name);
@@ -55,14 +55,18 @@ public class AddContactFragment extends Fragment {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getActivity().getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
-
                         try {
                             if(response.getString("MsgType").equals("1")){
-                                System.out.println("Response Code: " + response.getString("MsgType"));
+                                Toast toast = Toast.makeText(getActivity().getApplicationContext(), params.get("Friend") + " is now your friend", Toast.LENGTH_SHORT);
+                                toast.show();
                             }else{
-                                System.out.println("Response Code: " + response.getString("MsgType"));
+                                if(response.getString("Info").equals("Freund bereits auf der Liste")){
+                                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Contact is already your friend", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }else{
+                                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), "Contact does not exist", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();

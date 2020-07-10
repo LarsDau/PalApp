@@ -8,17 +8,16 @@
     android:id="@+id/ChatFragment"
     android:background="@android:color/holo_blue_bright">
 
-
     <Button
         android:id="@+id/send_message"
         android:layout_width="86dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginBottom="16dp"
-        android:background="#0F719E"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:clickable="false"
-        android:text="send"
         android:onClick="sendClickedFragment"
+        android:text="send"
+        android:background="@android:color/holo_green_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -39,40 +38,43 @@
     <EditText
         android:id="@+id/toSendMessage"
         android:layout_width="267dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/design_default_color_error"
-        android:color="#670A0A"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="6dp"
+        android:layout_marginBottom="32dp"
+        android:backgroundTint="@android:color/black"
+        android:color="@android:color/black"
         android:ems="10"
         android:hint="Type Message"
         android:inputType="textPersonName"
-
-
-        android:textColorHint="#E40C0C"
+        android:textColorHint="@android:color/black"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/send_message"
-        app:layout_constraintHorizontal_bias="0.355"
+        app:layout_constraintEnd_toStartOf="@+id/send_file"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/share_Location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_width="86dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:onClick="LocationButtonClickedFragment"
         android:text="Location"
-        app:layout_constraintBottom_toTopOf="@+id/send_message"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.95"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:textSize="12sp"
+        android:background="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/send_message" />
 
     <Button
         android:id="@+id/send_file"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
         android:onClick="sendFileClicked"
         android:text="Send File"
-        app:layout_constraintBottom_toTopOf="@+id/share_Location"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:background="@android:color/holo_green_light"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/share_Location" />
 </androidx.constraintlayout.widget.ConstraintLayout>

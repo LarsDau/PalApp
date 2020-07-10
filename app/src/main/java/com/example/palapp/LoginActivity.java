@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity {
             params.put("Password", passwordET.getText().toString());
             doLoginRequest(params);
         }else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Username and password must have at least 5 characters", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
 
             doLoginRequest(params);
         }else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getApplicationContext(), "Username and password must have at least 5 characters", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
@@ -156,18 +156,17 @@ public class LoginActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
 
                         try {
                             if(response.getString("MsgType").equals("1")){
-                                System.out.println("Login successfull");
+                                Toast toast = Toast.makeText(getApplicationContext(), "Login successfull", Toast.LENGTH_SHORT);
+                                toast.show();
                                 runFCM(params);
                                 startNextActivity();
                             }else{
-                                System.out.println("Wrong Data for Login");
+                                Toast toast = Toast.makeText(getApplicationContext(), "Wrong Data for Login", Toast.LENGTH_SHORT);
+                                toast.show();
                             }
-                            System.out.println("Request finished");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

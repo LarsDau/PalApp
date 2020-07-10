@@ -148,8 +148,14 @@ public class ContactActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
+                        try {
+                            if(response.getString("MsgType").equals("1")){
+                                Toast toast = Toast.makeText(getApplicationContext(), "Your contactlist", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         try {
                             JSONArray jsonArray = response.getJSONArray("Data");
@@ -179,8 +185,8 @@ public class ContactActivity extends AppCompatActivity {
         queue.add(postRequest);
     }
 
-    public void deleteContact(String user){
-        HashMap<String, String> params = new HashMap<>();
+    public void deleteContact(final String user){
+        final HashMap<String, String> params = new HashMap<>();
         params.put("Username", getIntent().getStringExtra("Username"));
         params.put("Password", getIntent().getStringExtra("Password"));
         params.put("Friend", user);
@@ -191,8 +197,14 @@ public class ContactActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG);
-                        toast.show();
+                        try {
+                            if(response.getString("MsgType").equals("1")){
+                                Toast toast = Toast.makeText(getApplicationContext(), params.get("Friend") + " is no longer your friend", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
                         try {
                             if(response.getString("MsgType").equals("1")){

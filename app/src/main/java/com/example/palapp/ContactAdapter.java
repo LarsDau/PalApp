@@ -16,12 +16,10 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.ContactV
 
     public  class ContactViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         public TextView textView1;
-        public TextView textView2;
 
         public ContactViewHolder(@NonNull  View itemView ) {
             super(itemView);
             textView1 = itemView.findViewById(R.id.contactName);
-            textView2 = itemView.findViewById(R.id.lastMessage);
             itemView.setOnClickListener(this);
         }
 

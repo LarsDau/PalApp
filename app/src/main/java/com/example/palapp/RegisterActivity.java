@@ -13,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
             params.put("Password", inputPassword);
             doRegisterRequest(params);
         }else{
-            Toast toast = Toast.makeText(getApplicationContext(), "Username und Passwort müssen mind. 5 Zeichen haben", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "Username and password must have at least 5 characters", Toast.LENGTH_LONG);
             toast.show();
         }
     }
@@ -51,8 +52,18 @@ public class RegisterActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_LONG);
-                        toast.show();
+                        try {
+                            if(response.getString("MsgType").equals("1")){
+                                Toast toast = Toast.makeText(getApplicationContext(), "User is registered now", Toast.LENGTH_LONG);
+                                toast.show();
+                            }else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "User already exists", Toast.LENGTH_LONG);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 },
                 new Response.ErrorListener() {
