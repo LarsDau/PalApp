@@ -21,6 +21,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
@@ -71,27 +72,26 @@ public class storageActivity extends AppCompatActivity {
             };
         }
     public void send_image_Clicked(View view , ImageView imageView) {
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 30, bos);
-        byte[] bb = bos.toByteArray();
-        String imageStr = Base64.encodeToString(bb, 0);
+        if(imageView.getDrawable() != null){
+            BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 30, bos);
+            byte[] bb = bos.toByteArray();
+            String imageStr = Base64.encodeToString(bb, 0);
 
+            HashMap<String, String> paramsMessage = new HashMap<>();
+            paramsMessage.put("Username", getIntent().getStringExtra("Sender"));
+            paramsMessage.put("Password", getIntent().getStringExtra("password"));
+            paramsMessage.put("Recipient", getIntent().getStringExtra("Recipient"));
+            paramsMessage.put("Mimetype", "text/plain");
+            paramsMessage.put("Data", imageStr);
 
-
-
-
-
-        HashMap<String, String> paramsMessage = new HashMap<>();
-        paramsMessage.put("Username", getIntent().getStringExtra("Sender"));
-        paramsMessage.put("Password", getIntent().getStringExtra("password"));
-        paramsMessage.put("Recipient", getIntent().getStringExtra("Recipient"));
-        paramsMessage.put("Mimetype", "text/plain");
-        paramsMessage.put("Data", imageStr);
-
-        sendMessageRequest(paramsMessage);
-
+            sendMessageRequest(paramsMessage);
+        }else{
+            Toast toast = Toast.makeText(getApplicationContext(), "You can't send nothing. Select an image", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     public void sendMessageRequest(HashMap<String, String> params) {
@@ -103,8 +103,17 @@ public class storageActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
+                        try {
+                            if(response.getString("MsgType").equals("1")){
+                                Toast toast = Toast.makeText(getApplicationContext(), "File was sent", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "File was not sent", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {

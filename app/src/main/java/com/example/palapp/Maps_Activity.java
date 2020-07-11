@@ -26,6 +26,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,8 +140,17 @@ public class Maps_Activity extends FragmentActivity implements OnMapReadyCallbac
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast toast = Toast.makeText(getApplicationContext(), response.toString(), Toast.LENGTH_SHORT);
-                        toast.show();
+                        try {
+                            if(response.getString("MsgType").equals("1")){
+                                Toast toast = Toast.makeText(getApplicationContext(), "Location was sent", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }else{
+                                Toast toast = Toast.makeText(getApplicationContext(), "Location was not sent", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {

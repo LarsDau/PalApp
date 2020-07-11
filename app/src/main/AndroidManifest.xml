@@ -27,7 +27,9 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".storageActivity" />
+        <activity
+            android:name=".storageActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity android:name=".maps_receiver" />
         <activity
             android:name=".Maps_Activity"
