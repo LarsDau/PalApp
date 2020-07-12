@@ -2,7 +2,12 @@ package com.example.palapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.icu.text.Transliterator;
+import android.os.Build;
+import android.os.Environment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +17,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+
+import static androidx.core.app.ActivityCompat.requestPermissions;
 
 public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder> {
 
@@ -21,6 +31,7 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
     public  onItemClickListener mListener;
 
     public  class chatviewholder extends RecyclerView.ViewHolder implements  View.OnClickListener {
+
         public TextView mSender;
         public TextView mMessage;
         public TextView mDate;
@@ -58,8 +69,8 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
 
                 case 2:
                     intent =  new Intent( context ,Image_receiver.class);
-                    intent.putExtra("Message" , mNachrichtItems.get(getAdapterPosition()).getMessage());
-                    break;
+                   intent.putExtra("Message" , mNachrichtItems.get(getAdapterPosition()).getMessage());
+                   break;
 
 
                 default:
@@ -67,6 +78,8 @@ public class chatAdapter extends RecyclerView.Adapter<chatAdapter.chatviewholder
             }
             context.startActivity(intent);
         }
+
+
     }
 
 
