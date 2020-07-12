@@ -19,7 +19,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, "id")
-                        .setContentTitle("Push Notification")
+                        .setContentTitle("Received Message. You can update now.")
                         .setContentText(remoteMessage.getData().get("text"))
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .setSmallIcon(R.drawable.ic_launcher_foreground);
@@ -44,5 +44,4 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             notificationManager.createNotificationChannel(notificationChannel);
         }
     }
-
 }
