@@ -34,6 +34,7 @@ public class chatActivity extends AppCompatActivity{
     private Button button;
     private boolean running;
     private TextView toContact;
+    private String user, recipient, password;
 
     SharedPreferences preferences;
 
@@ -52,10 +53,22 @@ public class chatActivity extends AppCompatActivity{
         chat_verlauf.setAdapter(chatAdapter);
         chatLayoutManager.setStackFromEnd(true);
         toContact = findViewById(R.id.toContact);
-        toContact.setText("Send message to " + getIntent().getStringExtra("recipient").toString());
+
+        if(getIntent().hasExtra("Notification")){
+            user = getIntent().getStringExtra("sender");
+            password = getIntent().getStringExtra("Password");
+            recipient = getIntent().getStringExtra("recipient");
+            downloadChat(NachrichtItems);
+        }else{
+
+
+            toContact.setText("Send message to " + getIntent().getStringExtra("recipient"));
+            downloadChat(NachrichtItems);
+        }
+
         textMessage = findViewById(R.id.toSendMessage);
 
-        downloadChat(NachrichtItems);
+
 
         running = true;
     }

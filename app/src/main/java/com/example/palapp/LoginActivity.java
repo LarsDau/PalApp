@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText userET, passwordET;
     CheckBox remBox;
     ProgressBar progressBar;
-    SharedPreferences preferences;
+    public static SharedPreferences preferences;
 
     public static Boolean fromLogout = false;
 
@@ -161,6 +161,10 @@ public class LoginActivity extends AppCompatActivity {
                             if(response.getString("MsgType").equals("1")){
                                 Toast toast = Toast.makeText(getApplicationContext(), "Login successfull", Toast.LENGTH_SHORT);
                                 toast.show();
+                                SharedPreferences.Editor editor = preferences.edit();
+                                editor.putString("UserNotification", params.get("Username"));
+                                editor.putString("PasswordNotification", params.get("Password"));
+                                editor.apply();
                                 runFCM(params);
                                 startNextActivity();
                             }else{

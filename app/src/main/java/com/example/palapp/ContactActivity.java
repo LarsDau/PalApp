@@ -36,7 +36,7 @@ public class ContactActivity extends AppCompatActivity {
     private AddContactFragment addContactFragment;
     private ChatFragment chatFragment;
 
-    private boolean tabletMode;
+    public static boolean tabletMode;
     private FragmentTransaction fragmentTransaction;
     private FragmentManager fragmentManager;
 
@@ -68,10 +68,26 @@ public class ContactActivity extends AppCompatActivity {
             tabletMode = false;
         }
 
+        if(getIntent().hasExtra("Notification")){
+            sender = getIntent().getStringExtra("sender");
+            rec = getIntent().getStringExtra("recipient");
+            password = getIntent().getStringExtra("Password");
+
+            chatFragment = new ChatFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.containerForChatAndAddContact, chatFragment);
+            fragmentTransaction.commit();
+            chatFragment.setSender(sender);
+            chatFragment.setPasswordSender(password);
+            chatFragment.setRecipient(rec);
+            rec = getIntent().getStringExtra("recipient");
+        }else{
+            sender = getIntent().getStringExtra("Username");
+            password = getIntent().getStringExtra("Password");
+        }
+
         whichUser = findViewById(R.id.whichUser);
-        whichUser.setText(getIntent().getStringExtra("Username"));
-        sender = whichUser.getText().toString();
-        password = getIntent().getStringExtra("Password");
+        whichUser.setText(sender);
 
         contactItemArrayList = new ArrayList<>();
         contactList = findViewById(R.id.contactlist);
@@ -101,7 +117,7 @@ public class ContactActivity extends AppCompatActivity {
                 if(tabletMode == false){
                     Intent intent = new Intent(getApplicationContext() , chatActivity.class);
                     intent.putExtra("recipient" , contactItemArrayList.get(position).getmText1() );
-                    intent.putExtra("sender" , String.valueOf(whichUser.getText()));
+                    intent.putExtra("sender" , sender);
                     intent.putExtra("Password" , password);
                     System.out.println("this is what im looking for " +  whichUser.toString());
 
@@ -111,10 +127,16 @@ public class ContactActivity extends AppCompatActivity {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.containerForChatAndAddContact, chatFragment);
                     fragmentTransaction.commit();
-                    chatFragment.setSender(String.valueOf(whichUser.getText()));
-                    chatFragment.setPasswordSender(password);
-                    chatFragment.setRecipient(contactItemArrayList.get(position).getmText1());
-                    rec = contactItemArrayList.get(position).getmText1();
+                    if(getIntent().hasExtra("Notification")){
+                        chatFragment.setSender(getIntent().getStringExtra("sender"));
+                        chatFragment.setPasswordSender(getIntent().getStringExtra("Password"));
+                        rec = getIntent().getStringExtra("recipient");
+                    }else{
+                        chatFragment.setSender(String.valueOf(whichUser.getText()));
+                        chatFragment.setPasswordSender(password);
+                        chatFragment.setRecipient(contactItemArrayList.get(position).getmText1());
+                        rec = contactItemArrayList.get(position).getmText1();
+                    }
                 }
             }
         };
@@ -137,8 +159,13 @@ public class ContactActivity extends AppCompatActivity {
 
     public void updateList(ArrayList<ContactItem> list){
         final HashMap<String, String> params = new HashMap<>();
-        params.put("Username", getIntent().getStringExtra("Username"));
-        params.put("Password", getIntent().getStringExtra("Password"));
+        if(getIntent().hasExtra("Notification")){
+            params.put("Username", sender);
+            params.put("Password", password);
+        }else{
+            params.put("Username", sender);
+            params.put("Password", password);
+        }
 
         adapterContactList.clear();
 
@@ -187,8 +214,13 @@ public class ContactActivity extends AppCompatActivity {
 
     public void deleteContact(final String user){
         final HashMap<String, String> params = new HashMap<>();
-        params.put("Username", getIntent().getStringExtra("Username"));
-        params.put("Password", getIntent().getStringExtra("Password"));
+        if(getIntent().hasExtra("Notification")){
+            params.put("Username", getIntent().getStringExtra("sender"));
+            params.put("Password", getIntent().getStringExtra("Password"));
+        }else{
+            params.put("Username", getIntent().getStringExtra("Username"));
+            params.put("Password", getIntent().getStringExtra("Password"));
+        }
         params.put("Friend", user);
 
         RequestQueue queue = Volley.newRequestQueue(this);
@@ -242,12 +274,12 @@ public class ContactActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.containerForChatAndAddContact, addContactFragment);
             fragmentTransaction.commit();
-            addContactFragment.setUser(getIntent().getStringExtra("Username"));
-            addContactFragment.setPassword(getIntent().getStringExtra("Password"));
+            addContactFragment.setUser(sender);
+            addContactFragment.setPassword(password);
         }else{
             Intent intent = new Intent(this , AddContactActivity.class);
-            intent.putExtra("Username", getIntent().getStringExtra("Username"));
-            intent.putExtra("Password", getIntent().getStringExtra("Password"));
+            intent.putExtra("Username", sender);
+            intent.putExtra("Password", password);
             startActivity(intent);
         }
     }
@@ -259,8 +291,8 @@ public class ContactActivity extends AppCompatActivity {
     public void LocationButtonClickedFragment(View view) {
         if(tabletMode){
             Intent intent = new Intent(this, Maps_Activity.class);
-            intent.putExtra("Sender", getIntent().getStringExtra("Username"));
-            intent.putExtra("password", getIntent().getStringExtra("Password"));
+            intent.putExtra("Sender", sender);
+            intent.putExtra("password", password);
             intent.putExtra("Recipient", rec);
             startActivity(intent);
         }
