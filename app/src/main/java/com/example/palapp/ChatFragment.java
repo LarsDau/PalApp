@@ -38,7 +38,6 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View myView = inflater.inflate(R.layout.fragment_chat, container, false);
         button = myView.findViewById(R.id.share_Location);
-        setOnClickListener();
         NachrichtItems = new ArrayList<>();
 
         chat_verlauf = myView.findViewById(R.id.chat_verlauff);
@@ -49,7 +48,6 @@ public class ChatFragment extends Fragment {
         chat_verlauf.setAdapter(chatAdapter);
         chatLayoutManager.setStackFromEnd(true);
         textMessage = myView.findViewById(R.id.toSendMessage);
-
 
         downloadChat(NachrichtItems);
 
@@ -69,26 +67,6 @@ public class ChatFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-//        focus = true;
-//        Thread t = new Thread(){
-//            @Override
-//            public void run(){
-//                while(focus == true){
-//                    try{
-//                        Thread.sleep(3000);
-//                        getActivity().runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                downloadChat(NachrichtItems);
-//                            }
-//                        });
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//        };
-//        t.start();
     }
 
     private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems) {
@@ -104,21 +82,6 @@ public class ChatFragment extends Fragment {
         }catch (Exception e){
             e.printStackTrace();
         }
-    }
-
-    public  String messageLatitude(String message){
-        String newMessage = message.substring(29);
-        int space1 = newMessage.indexOf(' ');
-        String Latitude = newMessage.substring(0,space1);
-        return Latitude;
-    }
-
-    public String messageLongitude(String Message){
-        String newMessage = Message.substring(29);
-        int space1 = newMessage.indexOf(' ');
-        int space2 = newMessage.indexOf(' ' , space1+1);
-        String Longitude = newMessage.substring(space1+1,space2);
-        return Longitude;
     }
 
     public void sendClickedFragment(View view){
@@ -142,25 +105,6 @@ public class ChatFragment extends Fragment {
         }
 
         textMessage.setText("");
-    }
-
-//    private void addLastMessage(ArrayList<NachrichtItem> NachrichtItems) {
-//        chatAdapter.updateItems(NachrichtItems);
-//        chatAdapter.notifyDataSetChanged();
-//        chat_verlauf.scrollToPosition(NachrichtItems.size());
-//    }
-
-    //Maps
-    private void setOnClickListener() {
-        listener = new chatAdapter.onItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Intent intent = new Intent(getActivity().getApplicationContext(), maps_receiver.class);
-                intent.putExtra("latitude" , messageLatitude(NachrichtItems.get(position).getMessage()));
-                intent.putExtra("longitude" , messageLongitude(NachrichtItems.get(position).getMessage()));
-                startActivity(intent);
-            }
-        };
     }
 
     public void updateChatButton(View view){
