@@ -30,11 +30,13 @@ public class chatActivity extends AppCompatActivity{
     private String getAllMessages = "http://palaver.se.paluno.uni-due.de/api/message/get";
     private EditText textMessage;
     private Button button;
+    private boolean running;
 
     SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         button = findViewById(R.id.share_Location);
         NachrichtItems = new ArrayList<>();
@@ -52,50 +54,101 @@ public class chatActivity extends AppCompatActivity{
 
         downloadChat(NachrichtItems);
 
+        running = true;
 
-
-       // Thread t = new Thread(){
-        //    @Override
-        // public void run(){
-        //  while(!isInterrupted()){
-        //       try{
-        //           Thread.sleep(2000);
-        //           new Thread(new Runnable() {
-        //               @Override
-        //               public void run() {
-        //                   downloadChat(NachrichtItems);
-        //               }
-        //           });
-        //       }catch (InterruptedException e) {
-        //           e.printStackTrace();
-        //       }
-        //   }
-        // }
-        //};
-        // t.start();
-
-
-
-
-        new Thread(new Runnable() {
+        Thread t = new Thread(){
             @Override
-            public void run() {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            public void run(){
+                while(running){
+                    try{
+                        Thread.sleep(2000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                downloadChat(NachrichtItems);
+                                System.out.println("RUNNING");
+                            }
+                        });
+                    }catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                downloadChat(NachrichtItems);
             }
-        });
+        };
+        t.start();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(running == false){
+            running = true;
+            Thread t = new Thread(){
+                @Override
+                public void run(){
+                    while(running){
+                        try{
+                            Thread.sleep(2000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    downloadChat(NachrichtItems);
+                                    System.out.println("RUNNING");
+                                }
+                            });
+                        }catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            t.start();
+        }
 
     }
 
+    @Override
+    protected  void onResume() {
+        super.onResume();
+        if(running == false){
+            running = true;
+            Thread t = new Thread(){
+                @Override
+                public void run(){
+                    while(running){
+                        try{
+                            Thread.sleep(2000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    downloadChat(NachrichtItems);
+                                    System.out.println("RUNNING");
+                                }
+                            });
+                        }catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            t.start();
+        }
+    }
 
     @Override
-    public void onRestart(){
-        super.onRestart();
-        downloadChat(NachrichtItems);
+    protected void onPause() {
+        super.onPause();
+        if(running == true){
+            running = false;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(running == true){
+            running = false;
+        }
     }
 
     private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems){
