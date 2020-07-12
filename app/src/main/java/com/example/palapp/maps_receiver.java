@@ -48,9 +48,7 @@ public class maps_receiver extends FragmentActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_maps_receiver);
         SupportMapFragment map = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Maps_Activity2));
         map.getMapAsync(this);
-
         message = trimMessage(getIntent().getStringExtra("Message"));
-
         latitude = Double.parseDouble(messageLatitude(message));
         longitude = Double.parseDouble(messageLongitude(message));
     }
@@ -89,13 +87,6 @@ public class maps_receiver extends FragmentActivity implements OnMapReadyCallbac
         LatLng mylocation = new LatLng(mLat, mLon);
         mMap.addMarker(new MarkerOptions().position(mylocation).snippet("TEXT BELLOW TITLE").title("TITLE")).showInfoWindow();
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         mMap.setMyLocationEnabled(true);
@@ -103,25 +94,40 @@ public class maps_receiver extends FragmentActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mylocation,15));
     }
 
-    public  String messageLatitude(String message){
+   // public  String messageLatitude(String message){
 
 
-        String Latitude = message.substring(0,10);
+    //     String Latitude = message.substring(0,10);
 
-        return Latitude;
-    }
-    public String messageLongitude(String Message){
+    //    return Latitude;
+    // }
+    //public String messageLongitude(String Message){
 
-        String Longitude =  Message.substring(11,19);
-        return Longitude;
+    //   String Longitude =  Message.substring(11,19);
+    //   return Longitude;
 
-    }
+    //}
     public String trimMessage(String message){
         String result = message.replace("Click Here for Location : ","");
         return result;
     }
 
 
+    private   String messageLatitude(String text) {
+
+        String[] words = text.split(" ");
+        return words[0];
+
+
+    }
+
+    private   String messageLongitude(String text) {
+
+        String[] words = text.split(" ");
+        return words[1];
+
+
+    }
 
 
 

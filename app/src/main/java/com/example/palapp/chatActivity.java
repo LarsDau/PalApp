@@ -46,29 +46,56 @@ public class chatActivity extends AppCompatActivity{
         chat_verlauf.setLayoutManager(chatLayoutManager);
         chat_verlauf.setAdapter(chatAdapter);
         chatLayoutManager.setStackFromEnd(true);
+
+
         textMessage = findViewById(R.id.toSendMessage);
 
         downloadChat(NachrichtItems);
 
-        Thread t = new Thread(){
-           @Override
-         public void run(){
-           while(!isInterrupted()){
-                try{
+
+
+       // Thread t = new Thread(){
+        //    @Override
+        // public void run(){
+        //  while(!isInterrupted()){
+        //       try{
+        //           Thread.sleep(2000);
+        //           new Thread(new Runnable() {
+        //               @Override
+        //               public void run() {
+        //                   downloadChat(NachrichtItems);
+        //               }
+        //           });
+        //       }catch (InterruptedException e) {
+        //           e.printStackTrace();
+        //       }
+        //   }
+        // }
+        //};
+        // t.start();
+
+
+
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
                     Thread.sleep(2000);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            downloadChat(NachrichtItems);
-                        }
-                    });
-                }catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                downloadChat(NachrichtItems);
             }
-         }
-        };
-        t.start();
+        });
+
+    }
+
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+        downloadChat(NachrichtItems);
     }
 
     private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems){
@@ -90,19 +117,19 @@ public class chatActivity extends AppCompatActivity{
         }
     }
 
-    public  String messageLatitude(String message){
-        String newMessage = message.substring(29);
-        int space1 = newMessage.indexOf(' ');
-        String Latitude = newMessage.substring(0,space1);
-        return Latitude;
-    }
-    public String messageLongitude(String Message){
-        String newMessage = Message.substring(29);
-        int space1 = newMessage.indexOf(' ');
-        int space2 = newMessage.indexOf(' ' , space1+1);
-        String Longitude = newMessage.substring(space1+1,space2);
-        return Longitude;
-    }
+   // public  String messageLatitude(String message){
+     //   String newMessage = message.substring(29);
+   //    int space1 = newMessage.indexOf(' ');
+    //    String Latitude = newMessage.substring(0,space1);
+    //   return Latitude;
+   //}
+   // public String messageLongitude(String Message){
+   //    String newMessage = Message.substring(29);
+   //    int space1 = newMessage.indexOf(' ');
+   //    int space2 = newMessage.indexOf(' ' , space1+1);
+    //    String Longitude = newMessage.substring(space1+1,space2);
+    //   return Longitude;
+    //}
 
     public void sendClicked(View view) {
         String sender = getIntent().getStringExtra("sender");
