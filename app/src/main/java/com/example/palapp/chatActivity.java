@@ -17,9 +17,6 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
-
-
 public class chatActivity extends AppCompatActivity{
 
     private RecyclerView chat_verlauf;
@@ -60,15 +57,15 @@ public class chatActivity extends AppCompatActivity{
             recipient = getIntent().getStringExtra("recipient");
             downloadChat(NachrichtItems);
         }else{
+            user = getIntent().getStringExtra("sender");
+            password = getIntent().getStringExtra("Password");
+            recipient = getIntent().getStringExtra("recipient");
 
-
-            toContact.setText("Send message to " + getIntent().getStringExtra("recipient"));
+            toContact.setText("Send message to " + recipient);
             downloadChat(NachrichtItems);
         }
 
         textMessage = findViewById(R.id.toSendMessage);
-
-
 
         running = true;
     }
@@ -101,9 +98,9 @@ public class chatActivity extends AppCompatActivity{
     }
 
     private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems){
-        String sender = getIntent().getStringExtra("sender");
-        String PasswordSender = getIntent().getStringExtra("Password");
-        String recipient = getIntent().getStringExtra("recipient");
+        String sender = user;
+        String PasswordSender = password;
+        String rec = recipient;
 
         try {
             JsonObject object = new JsonObject();
@@ -120,9 +117,9 @@ public class chatActivity extends AppCompatActivity{
     }
 
     public void sendClicked(View view) {
-        String sender = getIntent().getStringExtra("sender");
-        String PasswordSender = getIntent().getStringExtra("Password");
-        String recipient = getIntent().getStringExtra("recipient");
+        String sender = user;
+        String PasswordSender = password;
+        String rec = recipient;
         String mime = "text/plain";
         String toSendMessage = textMessage.getText().toString() + "0";
 
@@ -130,7 +127,7 @@ public class chatActivity extends AppCompatActivity{
             JsonObject object = new JsonObject();
             object.addProperty("Username", sender);
             object.addProperty("Password", PasswordSender);
-            object.addProperty("Recipient", recipient);
+            object.addProperty("Recipient", rec);
             object.addProperty("Mimetype", mime);
             object.addProperty("Data", toSendMessage);
 
@@ -150,17 +147,17 @@ public class chatActivity extends AppCompatActivity{
 
     public void LocationButtonClicked(View view) {
         Intent intent = new Intent(this, Maps_Activity.class);
-        intent.putExtra("Sender", getIntent().getStringExtra("sender"));
-        intent.putExtra("password", getIntent().getStringExtra("Password"));
-        intent.putExtra("Recipient", getIntent().getStringExtra("recipient"));
+        intent.putExtra("Sender", user);
+        intent.putExtra("password", password);
+        intent.putExtra("Recipient", recipient);
         startActivity(intent);
     }
 
     public void sendFileClicked(View view) {
         Intent intent = new Intent(this, storageActivity.class);
-        intent.putExtra("Sender", getIntent().getStringExtra("sender"));
-        intent.putExtra("password", getIntent().getStringExtra("Password"));
-        intent.putExtra("Recipient", getIntent().getStringExtra("recipient"));
+        intent.putExtra("Sender", user);
+        intent.putExtra("password", password);
+        intent.putExtra("Recipient", recipient);
         startActivity(intent);
     }
 }
