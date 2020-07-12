@@ -33,6 +33,9 @@ public class ChatFragment extends Fragment {
     private String sender, PasswordSender, recipient, mime, toSendMessage;
 
     private SwipeRefreshLayout swipeRefreshLayout;
+    private boolean running;
+    private Thread t;
+    private Runnable r;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,13 +63,53 @@ public class ChatFragment extends Fragment {
                 chatAdapter.notifyDataSetChanged();
             }
         });
-
         return myView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        running = true;
+        System.out.println("OnResume: Running?: " + running);
+        r = new Runnable() {
+            @Override
+            public void run() {
+                downloadChat(NachrichtItems);
+            }
+        };
+        if(getActivity() != null && r != null){
+            t = new Thread(){
+                @Override
+                public void run(){
+                    while(running){
+                        System.out.println("Contact: " + recipient + " Activity: " + getActivity() + " Runnable: " + r);
+                        try{
+                            t.sleep(2000);
+                            if(running){
+                                getActivity().runOnUiThread(r);
+                            }
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            };
+            t.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        running = false;
+        System.out.println("OnPause: Running?: " + running);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        running = false;
+        System.out.println("OnDestroyView: Running?: " + running);
     }
 
     private void downloadChat(ArrayList<NachrichtItem> altNachrichtenItems) {
@@ -107,9 +150,9 @@ public class ChatFragment extends Fragment {
         textMessage.setText("");
     }
 
-    public void updateChatButton(View view){
-        downloadChat(NachrichtItems);
-    }
+//    public void updateChatButton(View view){
+//        downloadChat(NachrichtItems);
+//    }
 
     public void setSender(String sender) {
         this.sender = sender;
