@@ -48,6 +48,7 @@ public class ContactActivity extends AppCompatActivity {
     private ContactAdapter adapterContactList;
     private RecyclerView.LayoutManager managerContactList;
     private ContactAdapter.onItemClickListener listener;
+    private boolean fromNotification;
 
     private ArrayList<ContactItem> contactItemArrayList;
 
@@ -68,11 +69,12 @@ public class ContactActivity extends AppCompatActivity {
             tabletMode = false;
         }
 
+
         if(getIntent().hasExtra("Notification")){
             sender = getIntent().getStringExtra("sender");
             rec = getIntent().getStringExtra("recipient");
             password = getIntent().getStringExtra("Password");
-
+            fromNotification = true;
             chatFragment = new ChatFragment();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.containerForChatAndAddContact, chatFragment);
@@ -82,6 +84,7 @@ public class ContactActivity extends AppCompatActivity {
             chatFragment.setRecipient(rec);
             rec = getIntent().getStringExtra("recipient");
         }else{
+            fromNotification = false;
             sender = getIntent().getStringExtra("Username");
             password = getIntent().getStringExtra("Password");
         }
@@ -127,10 +130,12 @@ public class ContactActivity extends AppCompatActivity {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.containerForChatAndAddContact, chatFragment);
                     fragmentTransaction.commit();
-                    if(getIntent().hasExtra("Notification")){
-                        chatFragment.setSender(getIntent().getStringExtra("sender"));
-                        chatFragment.setPasswordSender(getIntent().getStringExtra("Password"));
+                    if(getIntent().hasExtra("Notification") && fromNotification){
+                        chatFragment.setSender(sender);
+                        chatFragment.setPasswordSender(password);
                         rec = getIntent().getStringExtra("recipient");
+                        chatFragment.setRecipient(rec);
+                        fromNotification = false;
                     }else{
                         chatFragment.setSender(String.valueOf(whichUser.getText()));
                         chatFragment.setPasswordSender(password);
