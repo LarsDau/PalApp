@@ -55,6 +55,7 @@ public class chatActivity extends AppCompatActivity{
             user = getIntent().getStringExtra("sender");
             password = getIntent().getStringExtra("Password");
             recipient = getIntent().getStringExtra("recipient");
+            toContact.setText("Send message to " + recipient);
             downloadChat(NachrichtItems);
         }else{
             user = getIntent().getStringExtra("sender");
@@ -106,7 +107,7 @@ public class chatActivity extends AppCompatActivity{
             JsonObject object = new JsonObject();
             object.addProperty("Username", sender);
             object.addProperty("Password", PasswordSender);
-            object.addProperty("Recipient", recipient);
+            object.addProperty("Recipient", rec);
 
             ChatAsyncTask chatAsyncTask = new ChatAsyncTask(object, altNachrichtenItems ,getApplicationContext() , chatAdapter, chat_verlauf, "download");
             NachrichtItems = (ArrayList<NachrichtItem>) chatAsyncTask.execute().get();

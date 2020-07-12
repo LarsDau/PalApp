@@ -57,8 +57,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }else{
                 intent.putExtra("Notification", true);
                 intent.putExtra("recipient", remoteMessage.getData().get("sender"));
-                intent.putExtra("Password", LoginActivity.preferences.getString("UserNotification", ""));
-                intent.putExtra("sender", LoginActivity.preferences.getString("PasswordNotification", ""));
+                intent.putExtra("Password", LoginActivity.preferences.getString("PasswordNotification", ""));
+                intent.putExtra("sender", LoginActivity.preferences.getString("UserNotification", ""));
             }
         }
 
