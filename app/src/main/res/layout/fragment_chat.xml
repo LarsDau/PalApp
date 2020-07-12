@@ -17,7 +17,7 @@
         android:clickable="false"
         android:onClick="sendClickedFragment"
         android:text="send"
-        android:background="@android:color/holo_green_light"
+        android:background="#0F719E"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -25,13 +25,13 @@
         android:id="@+id/swiperefreshChat"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@android:color/holo_blue_bright"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/send_message"
+        app:layout_constraintBottom_toTopOf="@+id/share_Location"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -53,10 +53,10 @@
 
     <EditText
         android:id="@+id/toSendMessage"
-        android:layout_width="267dp"
+        android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="6dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="@android:color/black"
         android:color="@android:color/black"
@@ -74,24 +74,52 @@
         android:layout_width="86dp"
         android:layout_height="50dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
+        android:background="@android:color/holo_green_light"
         android:onClick="LocationButtonClickedFragment"
         android:text="Location"
         android:textSize="12sp"
-        android:background="@android:color/holo_green_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/send_message" />
+        app:layout_constraintBottom_toTopOf="@+id/send_message"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/send_file"
         android:layout_width="100dp"
         android:layout_height="50dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
+        android:background="@android:color/holo_green_light"
         android:onClick="sendFileClicked"
         android:text="Send File"
-        android:background="@android:color/holo_green_light"
+        app:layout_constraintEnd_toStartOf="@+id/share_Location"
+        app:layout_constraintTop_toBottomOf="@+id/swiperefreshChat" />
+
+    <Button
+        android:id="@+id/updateChat"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:background="#0F719E"
+        android:onClick="updateChatFragment"
+        android:text="Update"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/share_Location" />
+        app:layout_constraintEnd_toStartOf="@+id/send_message" />
+
+    <TextView
+        android:id="@+id/textContact"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Send Message To Contact"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/toSendMessage"
+        app:layout_constraintEnd_toStartOf="@+id/send_file"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/swiperefreshChat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

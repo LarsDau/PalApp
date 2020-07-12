@@ -267,6 +267,10 @@ public class ContactActivity extends AppCompatActivity {
         System.out.println("CLICKED");
     }
 
+    public void updateChatFragment(View view){
+        chatFragment.updateChatButton(view);
+    }
+
     public void sendClickedFragment(View view){
         chatFragment.sendClickedFragment(view);
     }

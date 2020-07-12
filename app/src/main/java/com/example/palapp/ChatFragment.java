@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +30,7 @@ public class ChatFragment extends Fragment {
     private chatAdapter.onItemClickListener listener;
     private EditText textMessage ;
     private Button button;
+    private TextView toContact;
 
     private String sender, PasswordSender, recipient, mime, toSendMessage;
 
@@ -43,6 +45,8 @@ public class ChatFragment extends Fragment {
         button = myView.findViewById(R.id.share_Location);
         NachrichtItems = new ArrayList<>();
 
+        toContact = myView.findViewById(R.id.textContact);
+        toContact.setText("Send message to " + recipient);
         chat_verlauf = myView.findViewById(R.id.chat_verlauff);
         chat_verlauf.setHasFixedSize(true);
         chatLayoutManager = new LinearLayoutManager(getActivity());
@@ -71,31 +75,31 @@ public class ChatFragment extends Fragment {
         super.onResume();
         running = true;
         System.out.println("OnResume: Running?: " + running);
-        r = new Runnable() {
-            @Override
-            public void run() {
-                downloadChat(NachrichtItems);
-            }
-        };
-        if(getActivity() != null && r != null){
-            t = new Thread(){
-                @Override
-                public void run(){
-                    while(running){
-                        System.out.println("Contact: " + recipient + " Activity: " + getActivity() + " Runnable: " + r);
-                        try{
-                            t.sleep(2000);
-                            if(running){
-                                getActivity().runOnUiThread(r);
-                            }
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            };
-            t.start();
-        }
+//        r = new Runnable() {
+//            @Override
+//            public void run() {
+//                downloadChat(NachrichtItems);
+//            }
+//        };
+//        if(getActivity() != null && r != null){
+//            t = new Thread(){
+//                @Override
+//                public void run(){
+//                    while(running){
+//                        System.out.println("Contact: " + recipient + " Activity: " + getActivity() + " Runnable: " + r);
+//                        try{
+//                            t.sleep(2000);
+//                            if(running){
+//                                getActivity().runOnUiThread(r);
+//                            }
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//            };
+//            t.start();
+//        }
     }
 
     @Override
@@ -150,9 +154,9 @@ public class ChatFragment extends Fragment {
         textMessage.setText("");
     }
 
-//    public void updateChatButton(View view){
-//        downloadChat(NachrichtItems);
-//    }
+    public void updateChatButton(View view){
+        downloadChat(NachrichtItems);
+    }
 
     public void setSender(String sender) {
         this.sender = sender;

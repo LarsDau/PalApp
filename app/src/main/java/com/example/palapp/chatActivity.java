@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
@@ -31,6 +33,7 @@ public class chatActivity extends AppCompatActivity{
     private EditText textMessage;
     private Button button;
     private boolean running;
+    private TextView toContact;
 
     SharedPreferences preferences;
 
@@ -48,91 +51,24 @@ public class chatActivity extends AppCompatActivity{
         chat_verlauf.setLayoutManager(chatLayoutManager);
         chat_verlauf.setAdapter(chatAdapter);
         chatLayoutManager.setStackFromEnd(true);
-
-
+        toContact = findViewById(R.id.toContact);
+        toContact.setText("Send message to " + getIntent().getStringExtra("recipient").toString());
         textMessage = findViewById(R.id.toSendMessage);
 
         downloadChat(NachrichtItems);
 
         running = true;
-
-        Thread t = new Thread(){
-            @Override
-            public void run(){
-                while(running){
-                    try{
-                        Thread.sleep(2000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                downloadChat(NachrichtItems);
-                                System.out.println("RUNNING");
-                            }
-                        });
-                    }catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-        t.start();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        if(running == false){
-            running = true;
-            Thread t = new Thread(){
-                @Override
-                public void run(){
-                    while(running){
-                        try{
-                            Thread.sleep(2000);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    downloadChat(NachrichtItems);
-                                    System.out.println("RUNNING");
-                                }
-                            });
-                        }catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            };
-            t.start();
-        }
 
     }
 
     @Override
     protected  void onResume() {
         super.onResume();
-        if(running == false){
-            running = true;
-            Thread t = new Thread(){
-                @Override
-                public void run(){
-                    while(running){
-                        try{
-                            Thread.sleep(2000);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    downloadChat(NachrichtItems);
-                                    System.out.println("RUNNING");
-                                }
-                            });
-                        }catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            };
-            t.start();
-        }
     }
 
     @Override
@@ -170,20 +106,6 @@ public class chatActivity extends AppCompatActivity{
         }
     }
 
-   // public  String messageLatitude(String message){
-     //   String newMessage = message.substring(29);
-   //    int space1 = newMessage.indexOf(' ');
-    //    String Latitude = newMessage.substring(0,space1);
-    //   return Latitude;
-   //}
-   // public String messageLongitude(String Message){
-   //    String newMessage = Message.substring(29);
-   //    int space1 = newMessage.indexOf(' ');
-   //    int space2 = newMessage.indexOf(' ' , space1+1);
-    //    String Longitude = newMessage.substring(space1+1,space2);
-    //   return Longitude;
-    //}
-
     public void sendClicked(View view) {
         String sender = getIntent().getStringExtra("sender");
         String PasswordSender = getIntent().getStringExtra("Password");
@@ -207,6 +129,10 @@ public class chatActivity extends AppCompatActivity{
         }
 
         textMessage.setText("");
+    }
+
+    public void updateChat(View view) {
+        downloadChat(NachrichtItems);
     }
 
     public void LocationButtonClicked(View view) {
